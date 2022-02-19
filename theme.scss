@@ -578,6 +578,7 @@ body {
 }
 
 body.home {
+  ul.elementor-nav-menu > li > a,
   ul.uael-nav-menu > li > a {
     color: #FFF!important;
     &:hover {
@@ -620,11 +621,13 @@ body.home {
       top: 0;
       right: 0;
     }
+    .elementor-menu-toggle,
     .uael-nav-menu__toggle.elementor-clickable {
       width: 45px;
       position: absolute;
       top: 5px;
       right: -10px;
+      color: #FFF;
       .uael-nav-menu-icon {
         color: #FFF;
       }
@@ -636,6 +639,7 @@ body.home {
     }
   }
   body.home {
+    ul.elementor-nav-menu > li > a,
     ul.uael-nav-menu > li > a {
       color: #000!important;
       &:hover {
