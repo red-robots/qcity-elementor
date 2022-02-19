@@ -10,6 +10,7 @@
  */
 
 $primary_color: #c5a92e;
+$tabwidth: 1024px;
 
 .page-content a,
 .comments-area a {
@@ -569,6 +570,11 @@ body {
     position: absolute;
     width: 100%;
   }
+  #site-logo {
+    @media only screen and (min-width: $tabwidth + 1px) {
+      padding-left: 2vw;
+    }
+  }
 }
 
 body.home {
@@ -577,6 +583,64 @@ body.home {
     &:hover {
       // color: $primary_color!important;
       color: #000!important;
+    }
+  }
+}
+
+
+/* ==============
+    RESPONSIVE
+================= */
+@media only screen and (max-width: $tabwidth) {
+  #site-logo {
+    width: 150px;
+    z-index: 120;
+    .elementor-image {
+      a {
+        display: block!important;
+        width: 100%;
+        img {
+          max-width:100%;
+          width:100%;
+        }
+      }
+    }
+  }
+  .elementor-location-header {
+    padding-left: 0!important;
+    padding-right: 0!important;
+    height: 123px;
+    #site-custom-header {
+      background-color: #000;
+      position: relative!important;
+      top: 0;
+    }
+    #site-main-nav {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    .uael-nav-menu__toggle.elementor-clickable {
+      width: 45px;
+      position: absolute;
+      top: 5px;
+      right: -10px;
+      .uael-nav-menu-icon {
+        color: #FFF;
+      }
+    }
+  }
+  #qcity-mini-logo {
+    .elementor-widget-image {
+      left: 0!important;
+    }
+  }
+  body.home {
+    ul.uael-nav-menu > li > a {
+      color: #000!important;
+      &:hover {
+        color: $primary_color!important;
+      }
     }
   }
 }
