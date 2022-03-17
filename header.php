@@ -19,9 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<meta name="viewport" content="<?php echo esc_attr( $viewport_content ); ?>">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 	<?php wp_head(); ?>
+	<script>var qcitySiteURL = '<?php echo get_site_url() ?>'; var siteThemeURL='<?php echo get_stylesheet_directory_uri() ?>';</script>
+  <link rel="stylesheet" href="<?php echo get_template_directory_uri() . '/assets/css/custom.css' ?>">
 </head>
 <body <?php body_class(); ?>>
-
+<?php if (is_singular('tribe_events')) { ?><div id="singlePostDataInfo" data-postid="<?php echo get_the_ID(); ?>"></div><?php } ?>
 <?php
 hello_elementor_body_open();
 
