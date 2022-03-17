@@ -1367,6 +1367,7 @@ body:not(.elementor-editor-active) #newsletter-type-info {
 
 body.single.single-tribe_events {
   padding-top: 0;
+  position: relative;
   .elementor-location-header {
     #site-custom-header {
       position: absolute;
@@ -1381,14 +1382,20 @@ body.single.single-tribe_events {
   #tribe-events-pg-template {
     max-width: 100%;
     width: 100%;
-    padding: 0px 30px 0px 30px;
+    padding: 0 0;
+    @include mid {
+      padding: 0px 30px 0px 30px;
+    }
   }
   .tribe-hero {
     width: 100%;
     float: left;
     background: $teal_light;
-    padding: 100px 50px 0 50px;
+    padding: 80px 30px 0;
     position: relative;
+    @include mid {
+      padding: 100px 50px 0 50px;
+    }
     &:after {
       content:"";
       display: block;
@@ -1401,23 +1408,36 @@ body.single.single-tribe_events {
     }
     .inner {
       padding-top: 50px;
+      // padding-right: 60px;
       position: relative;
       z-index: 5;
+      @include mid {
+        padding-right: 0;
+      }
     }
     .flexwrap {
       @include flexgroup();
       @include flexbox-align-items(center);
       .fxleft,
       .fxright {
-        width: 50%;
+        width: 100%;
         position: relative;
+        @include mid {
+          width: 50%;
+        }
       }
       .tribe-events-event-image {
         margin: 0 0;
         padding: 0 0;
       }
+      .fxright {
+        margin-top: 40px;
+        @include mid {
+          margin-top: 0;
+        }
+      }
       .fxleft {
-        @include tab {
+        @include mid {
           top: -3vw;
           padding-right: 4vw;
         }
@@ -1431,26 +1451,32 @@ body.single.single-tribe_events {
     .event-cat {
       border: 2px solid $secondary;
       display: inline-block;
-      min-width: 350px;
+      width: 100%;
       margin-bottom: 25px;
+      @include mid {
+        min-width: 350px;
+        width: auto;
+      }
       .wrap {
         @include flexgroup();
         @include flexbox-align-items(center);
         position: relative;
-        &:before {
-          content:"";
-          display: block;
-          width: 50%;
-          height: 100%;
-          background: $secondary;
-          position: absolute;
-          top: 0;
-          left: 0;
+        @include mid {
+          &:before {
+            content:"";
+            display: block;
+            width: 50%;
+            height: 100%;
+            background: $secondary;
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
         }
       }
       .cat, h2 {
-        display: inline-block;
-        width: 50%;
+        display: block;
+        width: 100%;
         font-family: $font_primary;
         font-size: 14px;
         font-weight: 500;
@@ -1458,6 +1484,9 @@ body.single.single-tribe_events {
         padding: 10px;
         margin: 0 0;
         position: relative;
+        @include mid {
+          width: 50%;
+        }
       }
       .cat {
         background: $secondary;
@@ -1480,11 +1509,14 @@ body.single.single-tribe_events {
     }
     .tribe-events-single-event-title {
       font-family: $font_secondary;
-      font-size: 60px;
+      font-size: 40px;
       font-weight: 500;
       line-height:1.1;
       letter-spacing: 1px;
       color: #000;
+      @include tab {
+        font-size: 60px;
+      }
     }
   }
 }
@@ -1492,6 +1524,10 @@ body.single.single-tribe_events {
 .tribe-events-single {
   width: 100%;
   float: left;
+  padding:0 20px;
+  @include tab {
+    padding: 0 0;
+  }
   .hentry {
     width: 100%;
   }
@@ -1499,9 +1535,14 @@ body.single.single-tribe_events {
   .tribe-events-single-event-description,
   .tribe-events-cal-links,
   .tribe-events-event-meta {
-    max-width: $xswidth;
-    width: 100%;
-    margin:0 auto;
+    // max-width: $xswidth;
+    // width: 100%;
+    // margin:0 auto;
+    @include tab {
+      max-width: $xswidth;
+      width: 100%;
+      margin:0 auto;
+    }
   }
   .tribe-events-schedule {
     margin-bottom: 30px;
