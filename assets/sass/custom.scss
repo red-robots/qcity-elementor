@@ -1601,6 +1601,12 @@ body.single.single-tribe_events {
 .flexwrap-event-info {
   margin-top: 60px;
   @include flexgroup();
+  a {
+    color: $secondary;
+    &:hover {
+      color: #737171;
+    }
+  }
   .flexcol {
     width: 100%;
     padding: 0 10px;
@@ -1650,20 +1656,6 @@ body.single.single-tribe_events {
             }
           }
         }
-        &.tribe-events-meta-group-venue {
-          @include mid {
-            // &:before {
-            //   content:"";
-            //   display: block;
-            //   width: 2px;
-            //   height: 100%;
-            //   position: absolute;
-            //   top: 0;
-            //   left: 66.66%;
-            //   background: #CCC;
-            // }
-          }
-        }
         @include mid {
           width: 50%;
         }
@@ -1693,12 +1685,6 @@ body.single.single-tribe_events {
       @include mid {
         border-left: 2px solid #CCC;
       }
-    }
-  }
-  .tribe-events-meta-group-venue {
-    @include mid {
-      // border-left: 2px solid #CCC;
-      // padding-left: 2vw;
     }
   }
   .tribe-events-event-meta .tribe-events-event-url {
