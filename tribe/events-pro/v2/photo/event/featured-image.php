@@ -29,26 +29,29 @@ $event_month     = $display_date->format_i18n( 'M' );
 $event_day_num   = $display_date->format_i18n( 'j' );
 $event_date_attr = $display_date->format( Dates::DBDATEFORMAT );
 ?>
-<div class="tribe-events-pro-photo__event-featured-image-wrapper">
+<div class="tribe-events-pro-photo__event-featured-image-wrapper events-photo-customized">
 	<a
 		href="<?php echo esc_url( $event->permalink ); ?>"
 		title="<?php echo esc_attr( get_the_title( $event ) ); ?>"
 		rel="bookmark"
 		class="tribe-events-pro-photo__event-featured-image-link"
 	>
-		<img
-			src="<?php echo esc_url( $image_url ); ?>"
-			<?php if ( ! empty( $event->thumbnail->srcset ) ) : ?>
-				srcset="<?php echo esc_attr( $event->thumbnail->srcset ); ?>"
-			<?php endif; ?>
-			<?php if ( ! empty( $event->thumbnail->alt ) ) : ?>
-				alt="<?php echo esc_attr( $event->thumbnail->alt ); ?>"
-			<?php endif; ?>
-			<?php if ( ! empty( $event->thumbnail->title ) ) : ?>
-				title="<?php echo esc_attr( $event->thumbnail->title ); ?>"
-			<?php endif; ?>
-			class="tribe-events-pro-photo__event-featured-image"
-		/>
+    <span class="event-image" style="background-image:url('<?php echo esc_url( $image_url ); ?>')">
+  		<img
+  			src="<?php echo esc_url( $image_url ); ?>"
+  			<?php if ( ! empty( $event->thumbnail->srcset ) ) : ?>
+  				srcset="<?php echo esc_attr( $event->thumbnail->srcset ); ?>"
+  			<?php endif; ?>
+  			<?php if ( ! empty( $event->thumbnail->alt ) ) : ?>
+  				alt="<?php echo esc_attr( $event->thumbnail->alt ); ?>"
+  			<?php endif; ?>
+  			<?php if ( ! empty( $event->thumbnail->title ) ) : ?>
+  				title="<?php echo esc_attr( $event->thumbnail->title ); ?>"
+  			<?php endif; ?>
+  			class="tribe-events-pro-photo__event-featured-image event-actual-image"
+  		/>
+      <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/rectangle-lg.png" alt="" class="helper">
+    </span>
 	</a>
   <div class="dateTime">
     <time class="tribe-events-pro-photo__event-date-tag-datetime" datetime="<?php echo esc_attr( $event_date_attr ); ?>">

@@ -72,7 +72,8 @@ $cat = ( isset($terms[0]) ) ? $terms[0] : '';
       <div class="fxleft">
         <div class="event-cat">
           <div class="goback">
-            <a href="<?php echo esc_url( tribe_get_events_link() ); ?>"> <?php printf( '&laquo; ' . esc_html_x( 'All %s', '%s Events plural label', 'the-events-calendar' ), $events_label_plural ); ?></a>
+            <!-- <a href="<?php //echo esc_url( tribe_get_events_link() ); ?>"> <?php //printf( '&laquo; ' . esc_html_x( 'All %s', '%s Events plural label', 'the-events-calendar' ), $events_label_plural ); ?></a> -->
+            <a href="<?php echo get_site_url() ?>/calendar/"><?php printf( '&laquo; ' . esc_html_x( 'All %s', '%s Events plural label', 'the-events-calendar' ), $events_label_plural ); ?></a>
           </div>  
           <div class="wrap">
             <?php if ($cat) { ?><div class="cat"><span><?php echo $cat->name; ?></span></div><?php } ?>
@@ -102,9 +103,9 @@ $cat = ( isset($terms[0]) ) ? $terms[0] : '';
       
   	<div class="tribe-events-schedule tribe-clearfix">
   		<?php echo tribe_events_event_schedule_details( $event_id, '<h2>', '</h2>' ); ?>
-  		<?php if ( tribe_get_cost() ) : ?>
+  		<?php if ( tribe_get_cost() ) { ?>
   			<span class="tribe-events-cost"><?php echo tribe_get_cost( null, true ) ?></span>
-  		<?php endif; ?>
+  		<?php } ?>
   	</div>
 
   	<!-- Event header -->
@@ -134,7 +135,36 @@ $cat = ( isset($terms[0]) ) ? $terms[0] : '';
       			<!-- Event content -->
       			<?php do_action( 'tribe_events_single_event_before_the_content' ) ?>
       			<div class="tribe-events-single-event-description tribe-events-content">
-      				<?php the_content(); ?>
+              <?php  
+                $post_id = get_the_ID();
+                $tooltip = '';
+                if ( tribe_is_recurring_event( $post_id ) ) {
+                  $tooltip .= '<div class="tribe-events-schedule tribe-clearfix">';
+                  $tooltip .= '<div class="recurringinfo">';
+                  $tooltip .= '<div class="event-is-recurring">';
+                  $tooltip .= '<span class="tribe-events-divider">|</span>';
+                  $tooltip .= sprintf( esc_html__( 'Recurring %s', 'tribe-events-calendar-pro' ), tribe_get_event_label_singular() );
+                  $tooltip .= sprintf( ' <a href="%s">%s</a>',
+                    esc_url( tribe_all_occurences_link( $post_id, false ) ),
+                    esc_html__( '(See all)', 'tribe-events-calendar-pro' )
+                  );
+                  $tooltip .= '<div id="tribe-events-tooltip-'. $post_id .'" class="tribe-events-tooltip recurring-info-tooltip">';
+                  $tooltip .= '<div class="tribe-events-event-body">';
+                  $tooltip .= tribe_get_recurrence_text( $post_id );
+                  $tooltip .= '</div>';
+                  $tooltip .= '<span class="tribe-events-arrow"></span>';
+                  $tooltip .= '</div>';
+                  $tooltip .= '</div>';
+                  $tooltip .= '</div>';
+                  $tooltip .= '</div>';
+                }
+                echo $tooltip;
+              ?>
+              <?php if ( get_the_content() ) { ?>
+               <div class="event-main-content">
+                 <?php the_content(); ?>
+               </div> 
+              <?php } ?>
       			</div>
       			<!-- .tribe-events-single-event-description -->
       			<?php do_action( 'tribe_events_single_event_after_the_content' ) ?>
