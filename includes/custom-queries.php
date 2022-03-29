@@ -50,7 +50,7 @@ function getUpcomingEventsFunc($perpage=10,$offset=0) {
 add_shortcode( 'upcoming_events', 'qct_upcoming_events_func' );
 function qct_upcoming_events_func( $atts ) {
   $a = shortcode_atts( array(
-    'display' => 10,
+    'show' => 10,
     'perpage' => 10,
     'offset'  => 0
   ), $atts );
@@ -62,8 +62,8 @@ function qct_upcoming_events_func( $atts ) {
   // ) );
   $perpage = 10;
   $perpage = (isset($a['perpage']) && $a['perpage']) ? $a['perpage'] : 10;
-  if(isset($a['display']) && $a['display']) {
-    $perpage = $a['display'];
+  if(isset($a['show']) && $a['show']) {
+    $perpage = $a['show'];
   }
 
   $events = tribe_get_events( array(
