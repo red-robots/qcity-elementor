@@ -20,11 +20,15 @@
       $bottom_start_date_month = tribe_get_start_date($id,false,'F jS');
       $start_and_end_time = '';
       //$schedule_detail = tribe_events_event_schedule_details();
-      if( $start = tribe_get_start_date($id,false,'h:i a') ) {
+      $start = tribe_get_start_date($id,false,'h:i a');
+      $end = tribe_get_end_date($id,false,'h:i a');
+      if( $start ) {
         $start_and_end_time .= $start;
       }
-      if( $end = tribe_get_end_date($id,false,'h:i a') ) {
-        $start_and_end_time .= ' &ndash; ' . $end;
+      if( $end ) {
+        if($start!=$end) {
+          $start_and_end_time .= ' &ndash; ' . $end;
+        }
       }
       if($start_and_end_time) {
         $bottom_start_date_month .= ' <b>|</b> ' . $start_and_end_time;
