@@ -1895,13 +1895,20 @@ body.post-type-archive {
   text-decoration: none;
   background: $secondary!important;
   color: #FFF;
-  padding: 8px 10px 4px!important;
+  padding: 8px 10px 8px!important;
   line-height:1.1;
   svg .cls-1 {
     fill: #FFF!important;
   }
   &:hover {
     background: $light_gray!important;
+  }
+}
+.button.btn-large .elementor-button-link.elementor-button,
+.button.btn-large .elementor-button {
+  padding: 13px 20px !important;
+  .elementor-button-text {
+    font-size: 15px;
   }
 }
 

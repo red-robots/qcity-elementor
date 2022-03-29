@@ -73,3 +73,14 @@ function formatPhoneNumber($str) {
   }
 }
 
+
+add_action('tribe_events_community_before_event_submission_page_template', function() {
+  if ( isset( $_POST[ 'community-event' ] ) ) {
+    // The url to redirect to
+    $url = "/event-confirmation";
+
+    if ( wp_redirect( $url ) ) {
+        exit;
+    }
+  }
+} );
