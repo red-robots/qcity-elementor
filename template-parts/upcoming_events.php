@@ -65,11 +65,10 @@
 <script>
 jQuery(document).ready(function($){
   var eventsCount = '<?php echo count($records) ?>';
-  var slidesNum = (eventsCount==1) ? 1 : 3;
-  if(slidesNum>1) {
+  if(eventsCount>3) {
     $('.upcoming-events-inner').slick({
       infinite: true,
-      slidesToShow: slidesNum,
+      slidesToShow: 3,
       slidesToScroll: 1,
       autoplay: true,
       autoplaySpeed: 2000,
