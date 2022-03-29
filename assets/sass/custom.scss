@@ -1908,9 +1908,39 @@ body.post-type-archive {
 .borderedText .elementor-heading-title {
   color: #000!important;
 } 
+.upcoming-events-section {
+  margin-bottom: 60px;
+}
+.upcoming-events-section > div.elementor-container {
+  &:after {
+    content:"";
+    display: block;
+    width: 100%;
+    height: calc(100% - 75px);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: $teal_light;
+    @include mid {
+      width: calc(100% + 50px);
+      left: -50px;
+    }
+  }
+  .elementor-row {
+    position: relative;
+    z-index: 10;
+  }
+}
+.upcoming-events-section > .elementor-container > .elementor-row {
+  padding-bottom: 50px;
+}
 .upcoming-events-slides {
   width: 100%;
+  position: relative;
   @include flexgroup();
+  @include tab {
+    right: -22px;
+  }
   .upcoming-events-inner {
     width: 100%;
     @include flexgroup();
@@ -1919,10 +1949,24 @@ body.post-type-archive {
     width: 33.33%;
     padding: 10px;
     .inner {
+      display: block;
+      text-decoration: none;
       position: relative;
       height: 430px;
       @include backgroundImage(center);
       background-color: $secondary;
+      &:before {
+        content:"";
+        display: block;
+        width: 100%;
+        height: 55%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background: -moz-linear-gradient(top,  rgba(125,185,232,0) 0%, rgba(240,105,41,1) 100%);
+        background: -webkit-linear-gradient(top,  rgba(125,185,232,0) 0%,rgba(240,105,41,1) 100%);
+        background: linear-gradient(to bottom,  rgba(125,185,232,0) 0%,rgba(240,105,41,1) 100%);
+      }
     }
     .text {
       position: absolute;
@@ -1931,6 +1975,69 @@ body.post-type-archive {
       width: 100%;
       height: 100%;
       z-index: 10;
+      .date {
+        width: 60px;
+        height: 60px;
+        padding: 5px;
+        text-align: center;
+        background: $primary;
+        position: absolute;
+        top: 0;
+        right: 0;
+        @include flexgroup();
+        @include flexbox-justify(center);
+        @include flexbox-align-items(center);
+        span {
+          line-height:1;
+          color: #FFF;
+          display: block;
+          text-transform: uppercase;
+          &.month {
+            font-family: Helvetica,Arial,sans-serif;
+            font-weight: bold;
+            font-size: 11px;
+            letter-spacing: 1px;
+          }
+          &.day {
+            font-family: $font_secondary;
+            font-weight: 500;
+            font-size: 28px;
+          }
+        }
+      }
+      .titlediv {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        padding:15px;
+        .schedule,.category, h2 {
+          color: #FFF;
+        }
+        .category {
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 1;
+          text-transform: uppercase;
+          margin-bottom: 8px;
+        }
+        .schedule {
+          font-size: 12px;
+          font-weight: 500;
+          padding-top: 5px;
+          b {
+            display: inline-block;
+            margin:0 3px;
+          }
+        }
+        h2 {
+          font-family: $font_secondary;
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 1.1;
+          margin:0 0;
+        }
+      }
     }
     img.resizer {
       width: 100%;

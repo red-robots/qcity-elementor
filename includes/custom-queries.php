@@ -28,21 +28,62 @@ function getUpcomingEventsFunc($perpage=10,$offset=0) {
 }
 
 
+// add_shortcode( 'upcoming_events', 'qct_upcoming_events_func' );
+// function qct_upcoming_events_func( $atts ) {
+//   $a = shortcode_atts( array(
+//     'perpage' => 10,
+//     'offset'  => 0
+//   ), $atts );
+//   $output = '';
+//   $res = getUpcomingEventsFunc($a['perpage'], $a['offset']);
+//   if( isset($res['records']) && $res['records'] ) {
+//     ob_start();
+//     $records = $res['records'];
+//     include( locate_template('template-parts/upcoming_events.php') );
+//     $output = ob_get_contents();
+//     ob_end_clean();
+//   }
+//   return $output;
+// }
+
+
 add_shortcode( 'upcoming_events', 'qct_upcoming_events_func' );
 function qct_upcoming_events_func( $atts ) {
   $a = shortcode_atts( array(
     'perpage' => 10,
     'offset'  => 0
   ), $atts );
-  $res = getUpcomingEventsFunc($a['perpage'], $a['offset']);
   $output = '';
-  if( isset($res['records']) && $res['records'] ) {
+  // $events = tribe_get_events( array(
+  //   'posts_per_page' => $a['perpage'],
+  //   'start_date' => new DateTime(),
+  //   'tribe_events_cat' => 'featured'
+  // ) );
+
+  $events = tribe_get_events( array(
+    'posts_per_page' => $a['perpage'],
+    'start_date' => new DateTime(),
+    'meta_query'    => array(
+      array(
+        'key'   => '_tribe_featured',
+        'compare' => '=',
+        'value'   => 1,
+      ),    
+    ),
+  ) );
+
+  
+
+  //_tribe_featured
+
+  if($events) {
     ob_start();
-    $records = $res['records'];
+    $records = $events;
     include( locate_template('template-parts/upcoming_events.php') );
     $output = ob_get_contents();
     ob_end_clean();
   }
+
   return $output;
 }
 
