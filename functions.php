@@ -227,4 +227,5 @@ if ( ! function_exists( 'hello_elementor_body_open' ) ) {
 
 
 require get_template_directory() . '/includes/extra.php';
+require get_template_directory() . '/includes/custom-queries.php';
 
