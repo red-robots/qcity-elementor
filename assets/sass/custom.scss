@@ -1020,19 +1020,34 @@ body:not(.home) #site-custom-header {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f36523', endColorstr='#00000000',GradientType=0 );
   opacity:0.9!important;
 }
+#site-custom-header .elementor-nav-menu--main {
+  padding-top: 15px;
+}
+#site-custom-header ul.elementor-nav-menu li a {
+  padding: 6px 15px;
+}
 #site-custom-header ul.elementor-nav-menu li.current_page_item > a,
 #site-custom-header ul.elementor-nav-menu li:hover > a {
   background: #61E3C9;
   color: #FFF!important;
+}
+#site-custom-header ul.elementor-nav-menu li {
+  position: relative;
 }
 #site-custom-header ul.elementor-nav-menu li a .sub-arrow {
   display:none;
 }
 #site-custom-header .elementor-nav-menu--dropdown {
   background-color: rgba(241,102,34,.85);
+  position: absolute;
+  right: 0;
 }
-#site-custom-header .elementor-nav-menu--dropdown a {
+#site-custom-header ul.elementor-nav-menu li .elementor-nav-menu--dropdown a {
   color: #FFF!important;
+  padding: 10px 15px;
+}
+#site-custom-header ul.elementor-nav-menu li:hover > a {
+  background-color: $secondary;
 }
 body.single .elementor-location-header #site-custom-header {
   position: relative;
