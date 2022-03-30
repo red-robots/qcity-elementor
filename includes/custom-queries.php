@@ -93,7 +93,7 @@ function qct_upcoming_events_func( $atts ) {
   return $output;
 }
 
-add_shortcode( 'category_posts_left', 'custom_category_posts_left_func' );
+add_shortcode( 'get_posts_left', 'custom_category_posts_left_func' );
 function custom_category_posts_left_func( $atts ) {
   $a = shortcode_atts( array(
     'category' => 'things-to-do',
@@ -169,7 +169,7 @@ function custom_category_posts_left_func( $atts ) {
   return $output;
 }
 
-add_shortcode( 'category_posts_right', 'custom_category_posts_right_func' );
+add_shortcode( 'get_posts_right', 'custom_category_posts_right_func' );
 function custom_category_posts_right_func( $atts ) {
   // $a = shortcode_atts( array(
   //   'category' => 'things-to-do',
