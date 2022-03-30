@@ -93,4 +93,97 @@ function qct_upcoming_events_func( $atts ) {
   return $output;
 }
 
+add_shortcode( 'category_posts_left', 'custom_category_posts_left_func' );
+function custom_category_posts_left_func( $atts ) {
+  $a = shortcode_atts( array(
+    'category' => 'things-to-do',
+    'show'  => 4
+  ), $atts );
+
+  $output = '';
+  $perpage = ( isset($a['show']) && $a['show'] ) ? $a['show'] : 2;
+  $term_slug = ( isset($a['category']) && $a['category'] ) ? $a['category'] : 'uncategorized';
+
+  $args = array(
+    'post_type'     =>'post',
+    'post_status'   =>'publish',
+    'posts_per_page'  => $perpage,
+    'order'       => 'DESC',
+    'orderby'     => 'date',
+    'tax_query' => array(
+      array(
+        'taxonomy'  => 'category', 
+        'field'   => 'slug',
+        'terms'   => array($term_slug) 
+      )
+    )
+  );
+
+  $posts = get_posts($args);
+  if( $posts ) {
+    ob_start();
+    $count = count($posts);
+    if($count>2) {
+      $items = array_chunk($posts,2);
+      $n=1; foreach($items as $entries) { ?>
+        <div class="c-feat-post-group <?php echo ($n==1) ? 'left':'right'; ?>">
+          <?php foreach ($entries as $e) { 
+            $id = $e->ID;
+            $thumbId = get_post_thumbnail_id($id);
+            $img = wp_get_attachment_image_src($thumbId,'full');
+            $bg = ($img) ? ' style="background-image:url('.$img[0].')"':'';
+            $permalink = get_permalink($id);
+            $post_title = $e->post_title;
+          ?>
+          <article class="c-feat-post <?php echo ($img) ? 'hasImage':'noImage'; ?>">
+            <a href="<?php echo $permalink ?>" class="c-pagelink">
+              <div class="c-image"<?php echo $bg ?>>
+                <img src="<?php echo get_stylesheet_directory_uri() ?>/assets/images/image-resizer.png" alt="" class="helper">
+              </div>
+              <div class="c-post-title">
+                <h3><?php echo $post_title ?></h3>
+              </div>
+            </a>
+          </article>
+          <?php } ?>
+        </div>
+        <script>
+        jQuery(document).ready(function($){
+          if( $('#c-feat-post-right').length && $('.c-feat-post-group.right').length ) {
+            $('.c-feat-post-group.right').appendTo('#c-feat-post-right');
+          }
+        });
+        </script>
+      <?php
+        $n++;
+      }
+    }
+    $output = ob_get_contents();
+    ob_end_clean();
+  }
+  
+  // echo "<pre>";
+  // print_r($items);
+  // echo "</pre>";
+
+  return $output;
+}
+
+add_shortcode( 'category_posts_right', 'custom_category_posts_right_func' );
+function custom_category_posts_right_func( $atts ) {
+  // $a = shortcode_atts( array(
+  //   'category' => 'things-to-do',
+  //   'show'  => 4
+  // ), $atts );
+
+  $output = '';
+  ob_start();
+  echo '<div id="c-feat-post-right"></div>';
+  $output = ob_get_contents();
+  ob_end_clean();
+  return $output;
+}
+
+
+
 

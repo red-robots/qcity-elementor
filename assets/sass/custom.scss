@@ -118,8 +118,14 @@ body:not(.elementor-editor-active) #hero-button {
 }
 
 #ThingsToDo_Second {
-  padding-top: 0;
-  padding-bottom: 25px;
+  padding-top: 5px;
+  padding-bottom: 0;
+  position: relative;
+  top: -10px;
+  .elementor-widget-wrap {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }
 #ThingsToDo_Second .elementor-widget-wrap {
   padding-bottom: 0!important;
@@ -2050,6 +2056,58 @@ body.post-type-archive {
       width: 100%;
       height: auto;
       float: left;
+    }
+  }
+}
+
+/* THINGS TO DO */
+.c-feat-post-group {
+  article {
+    position: relative;
+    width: 100%;
+    float: left;
+    margin: 30px 0 0;
+  }
+  article:first-child {
+    margin-top: 0;
+  }
+  .c-pagelink {
+    display: block;
+    width: 100%;
+    float: left;
+    text-decoration: none;
+  }
+  .c-image {
+    width: 100%;
+    float: left;
+    background-color: #CCC;
+    position: relative;
+    img {
+      width: 100%;
+      height: auto;
+      float: left;
+    }
+  }
+  .c-post-title {
+    width: 85%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+    background: #FFF;
+    padding: 10px;
+    h3 {
+      font-family: $font_secondary;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin: 0 0;
+      transition: all ease .3s;
+    }
+  }
+  .c-pagelink:hover {
+    h3 {
+      color: $primary;
     }
   }
 }
