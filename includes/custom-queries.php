@@ -126,6 +126,7 @@ function custom_category_posts_left_func( $atts ) {
     if($count>2) {
       $items = array_chunk($posts,2);
       $n=1; foreach($items as $entries) { ?>
+        <?php if ($n==1) { ?><div id="c-feat-post-left" class="term_<?php echo $term_slug; ?>"><?php } ?>
         <div class="c-feat-post-group <?php echo ($n==1) ? 'left':'right'; ?>">
           <?php foreach ($entries as $e) { 
             $id = $e->ID;
@@ -147,17 +148,18 @@ function custom_category_posts_left_func( $atts ) {
           </article>
           <?php } ?>
         </div>
-        <script>
-        jQuery(document).ready(function($){
-          if( $('#c-feat-post-right').length && $('.c-feat-post-group.right').length ) {
-            $('.c-feat-post-group.right').appendTo('#c-feat-post-right');
-          }
-        });
-        </script>
+        <?php if ($n==1) { ?></div><?php } ?>
       <?php
         $n++;
-      }
-    }
+      } ?>
+      <script>
+      jQuery(document).ready(function($){
+        if( $('#c-feat-post-right').length && $('.c-feat-post-group.right').length ) {
+          $('.c-feat-post-group.right').appendTo('#c-feat-post-right');
+        }
+      });
+      </script>
+    <?php }
     $output = ob_get_contents();
     ob_end_clean();
   }
@@ -171,14 +173,14 @@ function custom_category_posts_left_func( $atts ) {
 
 add_shortcode( 'get_posts_right', 'custom_category_posts_right_func' );
 function custom_category_posts_right_func( $atts ) {
-  // $a = shortcode_atts( array(
-  //   'category' => 'things-to-do',
-  //   'show'  => 4
-  // ), $atts );
+  $a = shortcode_atts( array(
+    'category' => 'things-to-do'
+  ), $atts );
+  $term_slug = ( isset($a['category']) && $a['category'] ) ? $a['category'] : 'uncategorized';
 
   $output = '';
   ob_start();
-  echo '<div id="c-feat-post-right"></div>';
+  echo '<div id="c-feat-post-right" class="term_'.$term_slug.'"></div>';
   $output = ob_get_contents();
   ob_end_clean();
   return $output;
