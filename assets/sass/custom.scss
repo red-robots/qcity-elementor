@@ -2080,12 +2080,34 @@ body.post-type-archive {
   .c-image {
     width: 100%;
     float: left;
-    background-color: #CCC;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #e7e7e7;
     position: relative;
     img {
       width: 100%;
       height: auto;
       float: left;
+    }
+  }
+  .noImage {
+    .c-image {
+      &:before {
+        content: "Photo Not Available";
+        display: block;
+        width: 100%;
+        text-align: center;
+        color: #b8b8b8;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: $font_secondary;
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
     }
   }
   .c-post-title {
