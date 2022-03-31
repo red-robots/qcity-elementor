@@ -1024,7 +1024,7 @@ body:not(.home) #site-custom-header {
   padding-top: 15px;
 }
 #site-custom-header ul.elementor-nav-menu li a {
-  padding: 6px 15px;
+  padding: 4px 15px 6px;
 }
 #site-custom-header ul.elementor-nav-menu li.current_page_item > a,
 #site-custom-header ul.elementor-nav-menu li:hover > a {
@@ -1041,10 +1041,14 @@ body:not(.home) #site-custom-header {
   background-color: rgba(241,102,34,.85);
   position: absolute;
   right: 0;
+  @include mid {
+    min-width: 14em!important;
+  }
 }
 #site-custom-header ul.elementor-nav-menu li .elementor-nav-menu--dropdown a {
   color: #FFF!important;
   padding: 10px 15px;
+  margin:0 0;
 }
 #site-custom-header ul.elementor-nav-menu li:hover > a {
   background-color: $secondary;
@@ -1122,6 +1126,14 @@ body.single .elementor-location-header #site-custom-header {
   font-family: "Oswald", Sans-serif;
   font-size: 30px;
   font-weight: 500;
+}
+
+.elementor .bsui .btn-primary {
+  background-color: $primary;
+  border: none;
+  &:hover {
+    background-color: $light_gray;
+  }
 }
 @media only screen and (min-width: 1025px) {
   body.single-post .elementor-location-header #site-custom-header {
@@ -1916,7 +1928,7 @@ body.post-type-archive {
   text-decoration: none;
   background: $secondary!important;
   color: #FFF;
-  padding: 8px 10px 8px!important;
+  padding: 8px 10px 5px!important;
   line-height:1.1;
   svg .cls-1 {
     fill: #FFF!important;
