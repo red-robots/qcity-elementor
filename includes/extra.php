@@ -84,18 +84,10 @@ function getFullURL($removeParam=null) {
 
 function qct_my_custom_admin_head() { 
 $successURL = get_site_url() . '/listing-confirmation/'; 
-$eventSuccess = get_site_url() . '/event-confirmation/'; 
-?>
+$eventSuccess = get_site_url() . '/event-confirmation/'; ?>
 <script>
 var params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v});
-jQuery(document).ready(function($){
-  if (window.location.href.indexOf("business-directory/add-business") > -1) {
-    if( $('form[name="geodirectory-add-post"]').length ) {
-      var redirectURI = '<input type="hidden" name="success_redirect" value="<?php echo $successURL; ?>">';
-      $('form[name="geodirectory-add-post"]').prepend(redirectURI);
-    }
-  }
-});
+var gdSuccessURL = '<?php echo $successURL; ?>';
 </script>
 <?php
 }

@@ -1717,6 +1717,12 @@ body.single.single-tribe_events {
         @include mid {
           width: 50%;
         }
+        &.full-width {
+          width: 100%!important;
+          &:before {
+            display: none;
+          }
+        }
       }
     }
     .tribe-events-venue-map {

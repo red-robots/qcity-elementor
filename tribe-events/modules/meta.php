@@ -47,9 +47,9 @@ if ( tribe_get_venue_id() ) {
 }
 
 // Include organizer meta if appropriate
-if ( tribe_has_organizer() ) {
-	tribe_get_template_part( 'modules/meta/organizer' );
-}
+// if ( tribe_has_organizer() ) {
+// 	tribe_get_template_part( 'modules/meta/organizer' );
+// }
 
 do_action( 'tribe_events_single_event_meta_primary_section_end' );
 ?>
