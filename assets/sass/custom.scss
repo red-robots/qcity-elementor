@@ -1876,6 +1876,9 @@ body.post-type-archive {
 .tribe-common .tribe-common-c-svgicon {
   color: #FFF!important;
 }
+.tribe-events-c-view-selector__button .tribe-common-c-svgicon.tribe-common-c-svgicon--caret-down {
+  color: #000!important;
+}
 .tribe-events-schedule .recurringinfo {
   // background-color: $teal_light;
   background-color: #eee;
@@ -2160,6 +2163,20 @@ body.post-type-archive {
     }
   }
 }
+
+.tribe_community_edit .tribe-add-recurrence.tribe-button,
+.tribe_community_edit .tribe-button,
+.tribe_community_edit .tribe-button,
+.tribe-button.submit,
+input[type="submit"].tribe-button.submit {
+  border-radius: 0;
+  background: $primary;
+  border: none;
+  &:hover {
+    background: $gold_light;
+  }
+}
+
 
 @media screen and (min-width:1025px) {
   #upcoming-events-section .uael-post__bg-wrap {

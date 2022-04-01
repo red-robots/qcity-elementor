@@ -83,7 +83,9 @@ function getFullURL($removeParam=null) {
 }
 
 function qct_my_custom_admin_head() { 
-$successURL = get_site_url() . '/listing-confirmation/'; ?>
+$successURL = get_site_url() . '/listing-confirmation/'; 
+$eventSuccess = get_site_url() . '/event-confirmation/'; 
+?>
 <script>
 var params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v});
 jQuery(document).ready(function($){
@@ -99,13 +101,13 @@ jQuery(document).ready(function($){
 }
 add_action( 'wp_footer', 'qct_my_custom_admin_head' );
 
-
 add_action('tribe_events_community_before_event_submission_page_template', function() {
   if ( isset( $_POST[ 'community-event' ] ) ) {
     // The url to redirect to
-    $url = "/event-confirmation";
+    $eventSuccess = get_site_url() . '/event-confirmation/'; 
+    //$url = "/event-confirmation";
 
-    if ( wp_redirect( $url ) ) {
+    if ( wp_redirect( $eventSuccess ) ) {
         exit;
     }
   }
