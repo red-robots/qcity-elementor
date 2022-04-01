@@ -107,22 +107,29 @@ add_action('tribe_events_community_before_event_submission_page_template', funct
 
 
 function gd_snippet_ajax_save_post_message( $message, $post_data ) {
-  $redirect_to = ( isset($post_data['success_redirect']) && $post_data['success_redirect'] ) ? $post_data['success_redirect'] : ''; // Redirect url
 
-  ob_start();
-  if($redirect_to && $post_data['ID']) { 
-    //$message = '<strong>Redirecting...</strong>';
+  if( isset($post_data['action']) && $post_data['action']=='geodir_save_post' ) {
+    $post_type = $post_data['post_type'];
+    $confirm['gd_businesses'] = get_site_url() . '/business-listing-confirmation/'; 
+    $confirm['gd_churches'] = get_site_url() . '/church-listing-confirmation/'; 
+    $confirm['gd_schools'] = get_site_url() . '/school-listing-confirmation/'; 
+
+    $redirect_to_js = '';
     $message = '';
-  ?>
-  <script type="text/javascript">
-    document.getElementsByClassName('gd-notification')[0].style.display = 'none';
-    window.location = '<?php echo $redirect_to; ?>';
-  </script>
-  <?php 
-  $redirect_to_js = ob_get_contents();
-  ob_end_clean();
-  $message = trim($redirect_to_js);
-  return $message;
+
+    ob_start();
+    if( isset($confirm[$post_type]) && $post_data['ID']) { 
+      $redirectURL = $confirm[$post_type]; ?>
+      <script type="text/javascript">
+        document.getElementsByClassName('gd-notification')[0].style.display = 'none';
+        window.location = '<?php echo $redirectURL; ?>';
+      </script>
+      <?php
+    }
+    $redirect_to_js = ob_get_contents();
+    ob_end_clean();
+    $message .= trim($redirect_to_js);
+    return $message;
   }
 }
 add_filter( 'geodir_ajax_save_post_message', 'gd_snippet_ajax_save_post_message', 100, 2 );
