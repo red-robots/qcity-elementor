@@ -59,7 +59,7 @@ do_action( 'tribe_events_single_event_meta_primary_section_end' );
 <?php if ( $set_venue_apart ) {
 
     if ( $not_skeleton ) { ?>
-    <div class="tribe-events-meta-group tribe-events-event-venue">
+    <div class="tribe-events-meta-group tribe-events-meta-group-venue">
     <?php } ?>
     <?php
     do_action( 'tribe_events_single_event_meta_secondary_section_start' );

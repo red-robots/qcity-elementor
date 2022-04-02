@@ -1769,9 +1769,15 @@ body.single.single-tribe_events {
             padding: 0 0;
           }
         }
-        .tribe-events-event-venue {
+        .tribe-events-meta-group-venue,
+        .tribe-events-meta-venue {
           @include mid {
             border-left: 2px solid #CCC;
+          }
+        }
+        .tribe-events-meta-group-venue {
+          .tribe-events-meta-venue {
+            border-left: none;
           }
         }
       }
