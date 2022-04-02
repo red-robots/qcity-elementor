@@ -134,3 +134,20 @@ function gd_snippet_ajax_save_post_message( $message, $post_data ) {
 }
 add_filter( 'geodir_ajax_save_post_message', 'gd_snippet_ajax_save_post_message', 100, 2 );
 
+
+add_action( 'wp_ajax_nopriv_verifyIfCommentExist', 'verifyIfCommentExist' );
+add_action( 'wp_ajax_verifyIfCommentExist', 'verifyIfCommentExist' );
+function verifyIfCommentExist() {
+  if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    $commentID = $_POST['commentid'];
+    global $wpdb;
+    $query = "SELECT comment_ID,comment_author,comment_content FROM " . $wpdb->prefix . "comments WHERE comment_ID=".$commentID;
+    $result = $wpdb->get_row($query);
+    $response['result'] = ($result) ? $result : '';
+    echo json_encode($response);
+  } else {
+    header("Location: ".$_SERVER["HTTP_REFERER"]);
+  }
+  die();
+}
+

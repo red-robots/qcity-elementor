@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
   <?php if ( is_singular('tribe_events') ): ?>
   <script>var geodir_params='';</script>
   <?php endif ?>
+  
 </head>
 <body <?php body_class(); ?>>
 <?php if (is_singular('tribe_events')) { ?><div id="singlePostDataInfo" data-postid="<?php echo get_the_ID(); ?>"></div><?php } ?>
