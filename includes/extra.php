@@ -151,3 +151,121 @@ function verifyIfCommentExist() {
   die();
 }
 
+add_shortcode( 'gd_custom_address', 'gd_custom_address_func' );
+function gd_custom_address_func( $atts ) {
+  $full_address = '';
+  if ( is_singular() ) {
+    global $post;
+    $post_id = $post->ID;
+    $street = get_post_meta($post_id,"geodir_street", true );
+    $city = get_post_meta($post_id,"geodir_city", true );
+    $state = get_post_meta($post_id,"geodir_region", true );
+    $zip = get_post_meta($post_id,"geodir_zip", true );
+
+    $a = shortcode_atts( array(
+      'state' => 'short',
+    ), $atts );
+
+    if( isset($a['state']) && $a['state']=='default' ) {
+      //just show whatever was entered complete name or abbreviation
+    } else {
+      if($state) {
+        $new_str = preg_replace("/\s+/", "", $state);
+        if( strlen($new_str) > 3 ) {
+          $state = gdConvertState($state);
+        }
+      }
+    }
+
+    $arrs = array_filter(array($street,$city,$state));
+    if( $arrs ) {
+      $full_address .= implode(', ',$arrs);
+    }
+    if($full_address) {
+      $full_address .= ' ' . $zip;
+    }
+  }
+  return $full_address;
+}
+
+
+function gdConvertState($name) {
+   $states = array(
+      array('name'=>'Alabama', 'abbr'=>'AL'),
+      array('name'=>'Alaska', 'abbr'=>'AK'),
+      array('name'=>'Arizona', 'abbr'=>'AZ'),
+      array('name'=>'Arkansas', 'abbr'=>'AR'),
+      array('name'=>'California', 'abbr'=>'CA'),
+      array('name'=>'Colorado', 'abbr'=>'CO'),
+      array('name'=>'Connecticut', 'abbr'=>'CT'),
+      array('name'=>'Delaware', 'abbr'=>'DE'),
+      array('name'=>'Florida', 'abbr'=>'FL'),
+      array('name'=>'Georgia', 'abbr'=>'GA'),
+      array('name'=>'Hawaii', 'abbr'=>'HI'),
+      array('name'=>'Idaho', 'abbr'=>'ID'),
+      array('name'=>'Illinois', 'abbr'=>'IL'),
+      array('name'=>'Indiana', 'abbr'=>'IN'),
+      array('name'=>'Iowa', 'abbr'=>'IA'),
+      array('name'=>'Kansas', 'abbr'=>'KS'),
+      array('name'=>'Kentucky', 'abbr'=>'KY'),
+      array('name'=>'Louisiana', 'abbr'=>'LA'),
+      array('name'=>'Maine', 'abbr'=>'ME'),
+      array('name'=>'Maryland', 'abbr'=>'MD'),
+      array('name'=>'Massachusetts', 'abbr'=>'MA'),
+      array('name'=>'Michigan', 'abbr'=>'MI'),
+      array('name'=>'Minnesota', 'abbr'=>'MN'),
+      array('name'=>'Mississippi', 'abbr'=>'MS'),
+      array('name'=>'Missouri', 'abbr'=>'MO'),
+      array('name'=>'Montana', 'abbr'=>'MT'),
+      array('name'=>'Nebraska', 'abbr'=>'NE'),
+      array('name'=>'Nevada', 'abbr'=>'NV'),
+      array('name'=>'New Hampshire', 'abbr'=>'NH'),
+      array('name'=>'New Jersey', 'abbr'=>'NJ'),
+      array('name'=>'New Mexico', 'abbr'=>'NM'),
+      array('name'=>'New York', 'abbr'=>'NY'),
+      array('name'=>'North Carolina', 'abbr'=>'NC'),
+      array('name'=>'North Dakota', 'abbr'=>'ND'),
+      array('name'=>'Ohio', 'abbr'=>'OH'),
+      array('name'=>'Oklahoma', 'abbr'=>'OK'),
+      array('name'=>'Oregon', 'abbr'=>'OR'),
+      array('name'=>'Pennsylvania', 'abbr'=>'PA'),
+      array('name'=>'Rhode Island', 'abbr'=>'RI'),
+      array('name'=>'South Carolina', 'abbr'=>'SC'),
+      array('name'=>'South Dakota', 'abbr'=>'SD'),
+      array('name'=>'Tennessee', 'abbr'=>'TN'),
+      array('name'=>'Texas', 'abbr'=>'TX'),
+      array('name'=>'Utah', 'abbr'=>'UT'),
+      array('name'=>'Vermont', 'abbr'=>'VT'),
+      array('name'=>'Virginia', 'abbr'=>'VA'),
+      array('name'=>'Washington', 'abbr'=>'WA'),
+      array('name'=>'West Virginia', 'abbr'=>'WV'),
+      array('name'=>'Wisconsin', 'abbr'=>'WI'),
+      array('name'=>'Wyoming', 'abbr'=>'WY'),
+      array('name'=>'Virgin Islands', 'abbr'=>'V.I.'),
+      array('name'=>'Guam', 'abbr'=>'GU'),
+      array('name'=>'Puerto Rico', 'abbr'=>'PR')
+   );
+
+   $return = false;   
+   $strlen = strlen($name);
+
+   foreach ($states as $state) :
+      if ($strlen < 2) {
+         return false;
+      } else if ($strlen == 2) {
+         if (strtolower($state['abbr']) == strtolower($name)) {
+            $return = $state['name'];
+            break;
+         }   
+      } else {
+         if (strtolower($state['name']) == strtolower($name)) {
+            $return = strtoupper($state['abbr']);
+            break;
+         }         
+      }
+   endforeach;
+   
+   return $return;
+} 
+
+
