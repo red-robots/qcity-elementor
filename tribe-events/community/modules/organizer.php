@@ -112,12 +112,17 @@ jQuery(document).ready(function($){
   });
 
   $(document).on('click','#event_tribe_organizer a.tribe-delete-this',function(e){
+    var tbody = $('#event_tribe_organizer tbody').length;
     var tr1 = $('#event_tribe_organizer tr.saved-linked-post').length;
     var tr2 = $('#event_tribe_organizer .new-tribe_organizer').length;
     var opt = $('select#saved_tribe_organizer').val();
+    var def = (opt=='-1') ? '': opt;
     if(tr1==1 && tr2==0) {
       $('input[name="organizer_data"]').val('');
     } 
+    else if(tbody==1) {
+      $('input[name="organizer_data"]').val('');
+    }
   });
 
   $(".tribe-community-events.form form").validate({
