@@ -216,4 +216,5 @@ jQuery(document).ready(function($){
       $('.flexwrap-event-info .tribe-events-meta-group').addClass('full-width');
     }
   }
+
 });

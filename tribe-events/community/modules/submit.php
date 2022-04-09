@@ -54,3 +54,100 @@ $button_label = apply_filters( 'tribe_community_event_edit_button_label', $butto
 </div>
 
 
+<script src="<?php echo get_stylesheet_directory_uri() ?>/assets/js/jquery.validate.min.js"></script>
+<script>
+jQuery(document).ready(function($){
+
+  if( $('#saved_tribe_organizer').length ) {
+    $('select#saved_tribe_organizer').val('').trigger('change');
+    $(document).on('change','select#saved_tribe_organizer',function(){
+      var opt = $(this).val();
+      if(opt!='-1') {
+        $('input[name="organizer_data"]').val( $(this).val() );
+        $('#organizer_data-error.error').remove();
+      } else {
+        $('input[name="organizer_data"]').val('');
+      }
+    });
+  }
+
+  $(document).on('click','#event_tribe_organizer a.tribe-add-post',function(e){
+    $('input.tribe_organizer-name').addClass('required');
+    $('input.organizer-phone').addClass('required');
+    $('input.organizer-email').addClass('required');
+
+    $('.new-tribe_organizer tr input').each(function(){
+      $(this).on('keypress blur focusout',function(){
+        if( $(this).val().trim().replace('/\s+/g','') ) {
+          $('input[name="organizer_data"]').val( $(this).val().trim().replace('/\s+/g','') );
+          $('#organizer_data-error.error').remove();
+        } else {
+          $('input[name="organizer_data"]').val('');
+        }
+      });
+    });
+  });
+
+  $(document).on('click','#event_tribe_organizer a.tribe-delete-this',function(e){
+    var tbody = $('#event_tribe_organizer tbody').length;
+    var tr1 = $('#event_tribe_organizer tr.saved-linked-post').length;
+    var tr2 = $('#event_tribe_organizer .new-tribe_organizer').length;
+    var opt = $('select#saved_tribe_organizer').val();
+    var def = (opt=='-1') ? '': opt;
+    if(tr1==1 && tr2==0) {
+      $('input[name="organizer_data"]').val('');
+    } 
+    else if(tbody==1) {
+      $('input[name="organizer_data"]').val('');
+    }
+  });
+
+  
+  $(document).on('keyup focusout blur','.new-tribe_organizer tr input',function(e){
+    var inputVal = [];
+    $("#event_tribe_organizer [name*=organizer]").each(function(){
+      var option = $(this).val().trim().replace('/\s+/g','');
+      var ival = (option=='-1') ? '':option;
+      if( $(this).val().trim().replace('/\s+/g','') ) {
+        inputVal.push( ival );
+      }
+    });
+    if( inputVal.length ) {
+      $('input[name="organizer_data"]').val( inputVal );
+    } else {
+      $('input[name="organizer_data"]').val('');
+    }
+  });
+
+  var errorMessages = '';
+  $(".tribe-community-events.form form").validate({
+    rules: {
+      organizer_data: "required"
+    },
+    messages: {
+      organizer_data: "Organizer Contact Details is required.",
+    },
+    errorElement: "div",
+    errorPlacement: function(error, element) {
+      var placement = $(element).data('error');
+      if (placement) {
+        $(placement).append(error)
+      } else {
+        error.insertAfter(element);
+      }
+    },
+    invalidHandler: function(form, validator) {
+      var errors = validator.numberOfInvalids();
+      if(errors) {
+        document.head.insertAdjacentHTML("beforeend", `<style>.tribe-community-notice-error{display:none}</style>`);
+      } 
+    },
+    submitHandler: function(form) {
+      form.submit();
+      document.head.insertAdjacentHTML("beforeend", `<style>.tribe-community-notice-error{display:none}</style>`);
+    }
+  });
+  
+});
+</script>
+

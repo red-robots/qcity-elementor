@@ -269,26 +269,26 @@ function gdConvertState($name) {
 } 
 
 
-add_filter( 'tribe_events_community_required_fields', 'require_organizer' );
-function require_organizer( $fields ) {
-    if ( ! is_array( $fields ) ) {
-        return $fields;
-    }
+// add_filter( 'tribe_events_community_required_fields', 'require_organizer' );
+// function require_organizer( $fields ) {
+//     if ( ! is_array( $fields ) ) {
+//         return $fields;
+//     }
 
-    $fields[] = 'organizer';
-    return $fields;
-}
+//     $fields[] = 'organizer';
+//     return $fields;
+// }
 
-add_filter( 'tribe_events_community_required_organizer_fields', 'require_organizer_email' );
-function require_organizer_email( $fields ) {
-    if ( ! is_array( $fields ) ) {
-        return $fields;
-    }
+// add_filter( 'tribe_events_community_required_organizer_fields', 'require_organizer_email' );
+// function require_organizer_email( $fields ) {
+//     if ( ! is_array( $fields ) ) {
+//         return $fields;
+//     }
 
-    $fields[] = 'Organizer';
-    $fields[] = 'Phone';
-    $fields[] = 'Email';
-    return $fields;
-}
+//     $fields[] = 'Organizer';
+//     $fields[] = 'Phone';
+//     $fields[] = 'Email';
+//     return $fields;
+// }
 
 

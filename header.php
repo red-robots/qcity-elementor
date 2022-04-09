@@ -22,9 +22,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<script>var qcitySiteURL = '<?php echo get_site_url() ?>'; var siteThemeURL='<?php echo get_stylesheet_directory_uri() ?>';</script>
   <link rel="stylesheet" href="<?php echo get_template_directory_uri() . '/assets/css/custom.css' ?>">
 
-  <?php if ( is_singular('tribe_events') ): ?>
+  <?php if ( is_singular('tribe_events') ) { ?>
   <script>var geodir_params='';</script>
-  <?php endif ?>
+  <?php } ?>
   
 </head>
 <body <?php body_class(); ?>>
