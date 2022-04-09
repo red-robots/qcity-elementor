@@ -155,16 +155,19 @@ jQuery(document).ready(function($){
       $("#image-placeholder svg").hide();
       $("#image-placeholder #imagehere").html('<img src="'+tmppath+'" alt="">');
       $('label[for="uploadFile"]').html('Filename: ' + e.target.files[0].name);
+      $('.tribe-remove-upload').show();
     }
   });
   $(document).on('click','.tribe-remove-upload a',function(e){
     e.preventDefault();
     $("#image-placeholder svg").show();
     $("#image-placeholder img").remove();
+    $("#EventImage").show();
   });
 
   $(document).on('click','.choose-file.tribe-button',function(e){
     e.preventDefault();
+    $(this).hide();
     $("#EventImage").trigger('click');
   });
   

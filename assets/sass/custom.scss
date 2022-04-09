@@ -2273,6 +2273,7 @@ input[type="submit"].tribe-button.submit {
     background-repeat: no-repeat;
     position: relative;
     top: 8px;
+    text-align: center;
     svg {
       fill: #CCC;
       display: block;
@@ -2308,6 +2309,12 @@ input[type="submit"].tribe-button.submit {
   input#uploadFile {
     position: absolute;
     z-index: -99;
+  }
+}
+.tribe-section-image-uploader {
+  #imagehere {
+    max-width: 200px;
+    width: 100%;
   }
 }
 
@@ -2424,6 +2431,10 @@ input[type="submit"].tribe-button.submit {
 .tribe-community-events .tribe-section.tribe-section-image-uploader .tribe-image-upload-area input#EventImage {
   opacity: 0;
   cursor: pointer;
+}
+.tribe-community-events .tribe-section.tribe-section-image-uploader .tribe-image-upload-area .form-controls {
+  max-width: 400px;
+  width: 100%;
 }
 
 .elementor-element-13691bb6 > .elementor-column-wrap {
