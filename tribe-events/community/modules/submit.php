@@ -162,6 +162,7 @@ jQuery(document).ready(function($){
     e.preventDefault();
     $("#image-placeholder svg").show();
     $("#image-placeholder img").remove();
+    $('.choose-file.tribe-button').show();
     $("#EventImage").show();
   });
 
@@ -169,6 +170,7 @@ jQuery(document).ready(function($){
     e.preventDefault();
     $(this).hide();
     $("#EventImage").trigger('click');
+    $("#EventImage").hide();
   });
   
 });

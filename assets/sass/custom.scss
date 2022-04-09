@@ -2437,6 +2437,10 @@ input[type="submit"].tribe-button.submit {
   width: 100%;
 }
 
+.tribe-community-events .tribe-section.tribe-section-image-uploader .tribe-image-upload-area .choose-file {
+  max-width: 300px!important;
+}
+
 .elementor-element-13691bb6 > .elementor-column-wrap {
   min-height: 300px;
   @include tab {
