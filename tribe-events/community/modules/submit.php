@@ -147,7 +147,21 @@ jQuery(document).ready(function($){
       document.head.insertAdjacentHTML("beforeend", `<style>.tribe-community-notice-error{display:none}</style>`);
     }
   });
+
+  /* upload */
+  $('#EventImage').change(function(e){
+    if( $(this).val() ) {
+      var tmppath = URL.createObjectURL(e.target.files[0]);
+      $("#image-placeholder svg").hide();
+      $("#image-placeholder #imagehere").html('<img src="'+tmppath+'" alt="">');
+      $('label[for="uploadFile"]').html('Filename: ' + e.target.files[0].name);
+    }
+  });
+  $(document).on('click','.tribe-remove-upload a',function(e){
+    e.preventDefault();
+    $("#image-placeholder svg").show();
+    $("#image-placeholder img").remove();
+  });
   
 });
 </script>
-
