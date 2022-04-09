@@ -67,8 +67,7 @@ if ( ! isset( $event ) ) {
   <?php /* Container for Organizer Contact Details if a value is entered */ ?>
   <div class="hidden-field">
     <label for="organizer_data" style="position:absolute;z-index: -999;">Organizer Contact Details</label>
-    <!-- <input type="text" name="organizer_data" id="organizer_data" data-error=".organizer_data_error" class="organizer_data_field" value="" style="position:absolute;z-index: -999;"> -->
-    <input type="text" name="organizer_data" id="organizer_data" data-error=".organizer_data_error" class="organizer_data_field" value="">
+    <input type="text" name="organizer_data" id="organizer_data" data-error=".organizer_data_error" class="organizer_data_field" value="" style="position:absolute;z-index: -999;">
     <div class="organizer_data_error"></div>
   </div>
 
