@@ -149,7 +149,7 @@ jQuery(document).ready(function($){
   });
 
   /* upload */
-  $('#EventImage').change(function(e){
+  $(document).on('change','#EventImage',function(e){
     if( $(this).val() ) {
       var tmppath = URL.createObjectURL(e.target.files[0]);
       $("#image-placeholder svg").hide();
@@ -161,6 +161,11 @@ jQuery(document).ready(function($){
     e.preventDefault();
     $("#image-placeholder svg").show();
     $("#image-placeholder img").remove();
+  });
+
+  $(document).on('click','.choose-file.tribe-button',function(e){
+    e.preventDefault();
+    $("#EventImage").trigger('click');
   });
   
 });

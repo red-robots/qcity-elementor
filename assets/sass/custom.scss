@@ -2288,6 +2288,7 @@ input[type="submit"].tribe-button.submit {
     }
   }
   .note {
+    margin-top: 40px;
     padding-top: 20px!important;
   }
   .tribe-remove-upload {
@@ -2419,6 +2420,10 @@ input[type="submit"].tribe-button.submit {
 }
 .logged-in.admin-bar.tribe_community_edit>span.select2-container {
   padding-top: 0!important;
+}
+.tribe-community-events .tribe-section.tribe-section-image-uploader .tribe-image-upload-area input#EventImage {
+  opacity: 0;
+  cursor: pointer;
 }
 
 .elementor-element-13691bb6 > .elementor-column-wrap {
