@@ -164,6 +164,7 @@ jQuery(document).ready(function($){
     $("#image-placeholder img").remove();
     $('.choose-file.tribe-button').show();
     $("#EventImage").show();
+    $('.tribe-remove-upload').hide();
   });
 
   $(document).on('click','.choose-file.tribe-button',function(e){
