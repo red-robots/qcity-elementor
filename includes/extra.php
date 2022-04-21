@@ -4,6 +4,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/*-------------------------------------
+  Adds Options page for ACF.
+---------------------------------------*/
+if( function_exists('acf_add_options_page') ) {acf_add_options_page();}
+
+function bellaworks_body_classes( $classes ) {
+    // Adds a class of group-blog to blogs with more than 1 published author.
+    if ( is_multi_author() ) {
+        $classes[] = 'group-blog';
+    }
+
+    // Adds a class of hfeed to non-singular pages.
+    if ( ! is_singular() ) {
+        $classes[] = 'hfeed';
+    }
+
+    if ( is_front_page() || is_home() ) {
+        $classes[] = 'homepage';
+    } else {
+        $classes[] = 'subpage';
+    }
+
+    $browsers = ['is_iphone', 'is_chrome', 'is_safari', 'is_NS4', 'is_opera', 'is_macIE', 'is_winIE', 'is_gecko', 'is_lynx', 'is_IE', 'is_edge'];
+    $classes[] = join(' ', array_filter($browsers, function ($browser) {
+        return $GLOBALS[$browser];
+    }));
+
+    return $classes;
+}
+add_filter( 'body_class', 'bellaworks_body_classes' );
+
+
 add_action( 'wp_ajax_nopriv_getPostEventMeta', 'getPostEventMeta' );
 add_action( 'wp_ajax_getPostEventMeta', 'getPostEventMeta' );
 function getPostEventMeta() {

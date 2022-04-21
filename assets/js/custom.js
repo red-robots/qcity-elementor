@@ -1,5 +1,25 @@
 jQuery(document).ready(function($){
 
+  if( $('#site-logo').length && logoMobile!==null) {
+    $('#site-logo .elementor-image a').append('<img src="'+logoMobile+'" alt="" class="mobile-site-logo" />');
+  } 
+
+  /* Mobile Menu */
+  if( $('#site-custom-header ul.elementor-nav-menu li.menu-item-has-children').length ) {
+    $('#site-custom-header ul.elementor-nav-menu li.menu-item-has-children').each(function(){
+      var parentLink = $(this).find('a.has-submenu').text();
+      var mobileParentLink = '<span class="mobileParentLink">'+parentLink+'</span>';
+      $(this).prepend(mobileParentLink);
+    });
+    $(document).on('click','.mobileParentLink',function(){
+      $(this).parent().find('ul.sub-menu').slideToggle();
+    });
+  }
+
+  $(document).on('click','#site-main-nav .elementor-menu-toggle',function(){
+    $('body').toggleClass('mobile-menu-open');
+  });
+
   $('body').not('.elementor-editor-active').find('#hero-caption').appendTo('#home-slider');
     
     /* THINGS TO DO section => Make image size consistent */
