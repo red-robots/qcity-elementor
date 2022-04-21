@@ -2835,10 +2835,28 @@ input[type="submit"].tribe-button.submit {
   .elementor-top-section.elementor-element-3195bacc {
     margin-bottom: 30px;
   }
+  .elementor-posts--thumbnail-left .elementor-post__thumbnail__link {
+    margin-right: 20px!important;
+  }
+  .tribe-events-header--has-event-search .tribe-filter-bar.tribe-filter-bar--horizontal {
+    z-index: 50;
+  }
 }
 @media screen and (max-width: 782px) {
   html #wpadminbar {
     top: -46px;
+  }
+  .tribe-filter-bar-c-filter__filter-fields {
+    position: relative;
+    top: 10px;
+    background: #f0f0f0;
+    li {
+      padding: 10px 20px!important;
+    }
+    .select2-container .select2-results__option--highlighted, .select2-container .select2-results__option--highlighted.select2-results__option[aria-selected=true] {
+      background-color: $secondary;
+      opacity: 1;
+    }
   }
 }
 @media screen and (min-width: 768px) {
