@@ -34,19 +34,19 @@ jQuery(document).ready(function($){
       });
     } 
     
-    if( $('.featured-posts-block .uael-post-wrapper').length ) {
-      $('.featured-posts-block').each(function(){
-        var parent = $(this);
-        var appendToEmptyBlock = parent.find('.firstpostBlock .elementor-column-wrap .elementor-widget-wrap');
-        var countPost = $(this).find('.featPostsBlock .uael-post-wrapper').length;
-        if(countPost>2) {
-          $(this).find('.featPostsBlock .uael-post-wrapper').first().appendTo(appendToEmptyBlock);
-        } else {
-          parent.find('.firstpostBlock').remove();
-          parent.find('.titleBlock').css('width','100%');
-        }
-      });
-    }
+    // if( $('.featured-posts-block .uael-post-wrapper').length ) {
+    //   $('.featured-posts-block').each(function(){
+    //     var parent = $(this);
+    //     var appendToEmptyBlock = parent.find('.firstpostBlock .elementor-column-wrap .elementor-widget-wrap');
+    //     var countPost = $(this).find('.featPostsBlock .uael-post-wrapper').length;
+    //     if(countPost>2) {
+    //       $(this).find('.featPostsBlock .uael-post-wrapper').first().appendTo(appendToEmptyBlock);
+    //     } else {
+    //       parent.find('.firstpostBlock').remove();
+    //       parent.find('.titleBlock').css('width','100%');
+    //     }
+    //   });
+    // }
     
     
     /* Upcoming Events Meta Data */
@@ -209,6 +209,7 @@ jQuery(document).ready(function($){
     }
 
   /* homepage > giveaways section */
+  /* homepage > Food & Beverage section */
   move_stuff_on_mobile_view();
   $(window).on('resize',function(){
     move_stuff_on_mobile_view();
@@ -217,6 +218,23 @@ jQuery(document).ready(function($){
     if( $(window).width() < 769 ) {
       if( $('.elementor-element.elementor-element-28fd8fb').length ) {
         $('.elementor-element.elementor-element-28fd8fb').insertAfter('.elementor-element.elementor-element-a0c763e');
+      }
+      if( $('.stories-two-columns .story-right-box').length ) {
+        $('.stories-two-columns .story-right-box').each(function(){
+          var source = $(this);
+          var parentDiv = $(this).parents('.stories-two-columns');
+          var firstBox = parentDiv.find('.firstpostBlock');
+          source.insertBefore(firstBox);
+        });
+      }
+    } else {
+      if( $('.stories-two-columns .story-right-box').length ) {
+        $('.stories-two-columns .story-right-box').each(function(){
+          var source = $(this);
+          var parentDiv = $(this).parents('.stories-two-columns');
+          var firstColumn = parentDiv.find('.featured-posts-block');
+          source.insertAfter(firstColumn);
+        });
       }
     }
   }

@@ -97,12 +97,19 @@ add_shortcode( 'get_posts_left', 'custom_category_posts_left_func' );
 function custom_category_posts_left_func( $atts ) {
   $a = shortcode_atts( array(
     'category' => 'things-to-do',
+    'offset'=>'',
     'show'  => 4
   ), $atts );
 
   $output = '';
-  $perpage = ( isset($a['show']) && $a['show'] ) ? $a['show'] : 2;
+  $offset = ( isset($a['offset']) && $a['offset'] ) ? true : false;
+  $show = ( isset($a['show']) && $a['show'] ) ? $a['show'] : 4;
+  $perpage = $show;
   $term_slug = ( isset($a['category']) && $a['category'] ) ? $a['category'] : 'uncategorized';
+
+  if($offset) {
+    $perpage = $perpage + 1;
+  }
 
   $args = array(
     'post_type'     =>'post',
@@ -121,9 +128,30 @@ function custom_category_posts_left_func( $atts ) {
 
   $posts = get_posts($args);
   if( $posts ) {
-    ob_start();
     $count = count($posts);
-    if($count>2) {
+    $final_posts = $posts;
+    $first_post = array();
+    if($offset && $count>2) {
+      foreach($posts as $k=>$p) {
+        if($k==0) {
+          $first_post = $p;
+          unset( $posts[$k] );
+        } 
+      }
+    }
+    
+
+    ob_start();
+    if($count>2) { 
+
+      if($first_post) { 
+        $fp_thumbId = get_post_thumbnail_id($first_post->ID);
+        $fp_img = wp_get_attachment_image_src($fp_thumbId,'full');
+        $fp_img_src = ($fp_img) ? $fp_img[0] : '';
+        ?>
+      <div class="latest-post-info" data-image="<?php echo $fp_img_src ?>" data-term-slug="<?php echo $term_slug ?>" data-post-id="<?php echo $first_post->ID ?>" data-post-title="<?php echo $first_post->post_title ?>" data-post-link="<?php echo get_permalink($first_post->ID) ?>"></div>
+      <?php }
+
       $items = array_chunk($posts,2);
       $n=1; foreach($items as $entries) { ?>
         <?php if ($n==1) { ?><div id="c-feat-post-left" class="term_<?php echo $term_slug; ?>"><?php } ?>
@@ -136,7 +164,7 @@ function custom_category_posts_left_func( $atts ) {
             $permalink = get_permalink($id);
             $post_title = $e->post_title;
           ?>
-          <article class="c-feat-post <?php echo ($img) ? 'hasImage':'noImage'; ?>">
+          <article data-post-id="<?php echo $id ?>" class="c-feat-post <?php echo ($img) ? 'hasImage':'noImage'; ?>">
             <a href="<?php echo $permalink ?>" class="c-pagelink">
               <div class="c-image"<?php echo $bg ?>>
                 <img src="<?php echo get_stylesheet_directory_uri() ?>/assets/images/image-resizer.png" alt="" class="helper">
@@ -156,6 +184,22 @@ function custom_category_posts_left_func( $atts ) {
       jQuery(document).ready(function($){
         if( $('#c-feat-post-right').length && $('.c-feat-post-group.right').length ) {
           $('.c-feat-post-group.right').appendTo('#c-feat-post-right');
+        }
+        if( $('.elementor-shortcode .latest-post-info').length ) {
+          $('.elementor-shortcode .latest-post-info').each(function(){
+            var source = $(this);
+            var parentDiv = $(this).parents('section.elementor-section');
+            if( parentDiv.find('.latest-post-box').length ) {
+              var imageSrc = source.attr('data-image');
+              var post_title = source.attr('data-post-title');
+              var post_link = source.attr('data-post-link');
+              var image_style = (imageSrc) ? ' style="background-image:url('+imageSrc+')"':'';
+              var latestPost = '<article class="special-latest-post"><a href="'+post_link+'" class="latest-article"'+image_style+'>';
+                  latestPost += '<span class="post-title"><span>'+post_title+'</span></span>';
+                  latestPost += '</a></article>';
+              parentDiv.find('.latest-post-box .elementor-widget-container').html(latestPost);
+            }
+          });
         }
       });
       </script>
@@ -186,6 +230,50 @@ function custom_category_posts_right_func( $atts ) {
   return $output;
 }
 
+
+add_shortcode( 'display_story_here', 'display_story_here_func' );
+function display_story_here_func( $atts ) {
+  $output = '';
+  $imageResize = get_template_directory_uri() . '/assets/images/image-resizer.png';
+  ob_start(); ?>
+  <div class="moved-article"></div>
+  <script>
+    jQuery(document).ready(function($){
+      var imageResizer = '<?php echo $imageResize ?>';
+      $('.moved-article').each(function(){
+        var source = $(this);
+        var iiparentDiv = source.parents('section.elementor-section.elementor-top-section.elementor-element');
+        var iiTarget = iiparentDiv.find('.elementor-widget-uael-posts');
+        var iiPost = iiTarget.find('.uael-post-grid__inner .uael-post-wrapper');
+        if(iiPost.length>2) {
+          var firstArticle = iiPost.eq(0); /* LATEST ARTICLE */
+          var secondArticle = iiPost.eq(1);
+          var imageThumbBox = secondArticle.find('.uael-post__thumbnail a');
+          if( imageThumbBox.find('img').not('.image-resizer').length ) {
+            var imageURL = imageThumbBox.find('img').not('.image-resizer').attr('src');
+            imageThumbBox.attr('style','background-image:url('+imageURL+')');
+          }
+          imageThumbBox.append('<img src="'+imageResizer+'" alt="" class="image-resizer">');
+          $(secondArticle).appendTo(source);
+          iiparentDiv.find('.elementor-widget-shortcode').addClass('top-story-placeholder');
+          iiparentDiv.find('.elementor-widget-shortcode').html(source.html());
+          if( iiparentDiv.find('.story-right-box').length ) {
+            var bigRightBox = iiparentDiv.find('.story-right-box .elementor-widget-wrap');
+            if( firstArticle.find('.uael-post__thumbnail a img').not('.image-resizer').length ) {
+              var firstArticleImageURL = firstArticle.find('.uael-post__thumbnail a img').not('.image-resizer').attr('src');
+              firstArticle.find('.uael-post__bg-wrap').attr('style','background-image:url('+firstArticleImageURL+')');
+            }
+            $(firstArticle).appendTo(bigRightBox);
+          }
+        }
+      });
+    });
+  </script>
+  <?php
+  $output = ob_get_contents();
+  ob_end_clean();
+  return $output;
+}
 
 
 
