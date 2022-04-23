@@ -227,6 +227,10 @@ jQuery(document).ready(function($){
           source.insertBefore(firstBox);
         });
       }
+      if( $('#ThingsToDo_Second').length && $('#ThingsToDo_First').length ) {
+        $('#ThingsToDo_Second').insertBefore('#ThingsToDo_First');
+      }
+      
     } else {
       if( $('.stories-two-columns .story-right-box').length ) {
         $('.stories-two-columns .story-right-box').each(function(){
@@ -236,6 +240,10 @@ jQuery(document).ready(function($){
           source.insertAfter(firstColumn);
         });
       }
+      if( $('#ThingsToDo_Second').length && $('#ThingsToDo_First').length ) {
+        $('#ThingsToDo_Second').insertAfter('#ThingsToDo_First');
+      }
+      
     }
   }
   
