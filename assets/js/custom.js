@@ -263,4 +263,17 @@ jQuery(document).ready(function($){
     }
   }
 
+  heroCaption();
+  $(window).resize(function(){
+    heroCaption();
+  });
+  function heroCaption() {
+    if( $('#hero-caption').length && $('.video-hero').length ) {
+      var videoHeight = $('.video-hero .elementor-widget-video').height();
+      var vH = videoHeight - 50;
+      $('#hero-caption.elementor-section').css('height',vH+'px');
+    }
+  }
+  
+
 });

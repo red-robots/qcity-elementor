@@ -2722,6 +2722,84 @@ body.home .elementor-widget-uael-posts {
   }
 }
 
+.elementor-section.video-hero {
+  padding: 0 3%;
+  position: relative;
+  z-index: 90;
+  overflow: hidden;
+  .elementor-container.elementor-column-gap-default {
+    background-color: #000;
+    max-width: 100%!important;
+    height: 100%;
+    .elementor-widget-wrap {
+      padding: 0 0!important;
+    }
+  }
+  .elementor-widget-video {
+    position: relative;
+    &:before {
+      display: block;
+      content:"";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgba(0,0,0,.3);
+      z-index: 20;
+    }
+    &:after {
+      display: block;
+      content:"";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: -moz-linear-gradient(top,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%);
+      background: -webkit-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
+      background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 );
+      z-index: 18;
+    }
+  }
+}
+.elementor-section-wrap {
+  position: relative;
+}
+
+body.home #hero-caption.elementor-section {
+  // height: calc(100vh - 45px);
+  z-index: 95;
+  .elementor-container.elementor-column-gap-default,
+  .elementor-row,
+  .elementor-column.elementor-col-100,
+  .elementor-column-wrap.elementor-element-populated {
+    width: 100%;
+    height: 100%;
+  }
+  .elementor-row {
+    .elementor-column-wrap.elementor-element-populated {
+      // @include flexgroup();
+      // @include flexbox-justify(center);
+      // @include flexbox-align-items(center);
+    }
+  }
+  .elementor-widget-wrap {
+    @include flexbox-align-content(center);
+  }
+  // .elementor-row {
+  //   @include flexgroup();
+  //   @include flexbox-justify(center);
+  //   @include flexbox-align-items(center);
+  //   .elementor-column.elementor-col-100 {
+  //     display: block;
+  //     width: 100%;
+  //     text-align: center;
+  //   }
+  // }
+}
+
 @media screen and (max-width: 1024px) {
   body {
     overflow-x: hidden;
@@ -3238,6 +3316,10 @@ body.home .elementor-widget-uael-posts {
         // }
       }
     }
+  }
+  .elementor-section.video-hero {
+    margin-top: 15px;
+    margin-bottom: 30px;
   }
 }
 
