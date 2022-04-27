@@ -3324,6 +3324,9 @@ body.home #hero-caption.elementor-section {
   }
   .home .elementor-element-0a52b86.featured-category-block,
   .home .elementor-element-75b9e62.featured-category-block {
+    .elementor-widget-container {
+      padding-top: 0!important;
+    }
     .uael-post-wrapper .uael-post__thumbnail {
       top: 0!important;
     }
