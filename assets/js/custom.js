@@ -263,17 +263,26 @@ jQuery(document).ready(function($){
     }
   }
 
-  heroCaption();
-  $(window).resize(function(){
-    heroCaption();
-  });
-  function heroCaption() {
-    if( $('#hero-caption').length && $('.video-hero').length ) {
-      var videoHeight = $('.video-hero .elementor-widget-video').height();
-      var vH = videoHeight - 50;
-      $('#hero-caption.elementor-section').css('height',vH+'px');
-    }
-  }
+  $('.elementor-section.video-hero').append('<img src="'+siteThemeURL+'/assets/images/video-resizer.png" class="video-resizer" />');
+  $('body').not('.elementor-editor-active').find('#hero-caption .elementor-widget-wrap').appendTo('.elementor-section.video-hero');
+  
+  // heroCaption();
+  // $(window).resize(function(){
+  //   heroCaption();
+  // });
+  // function heroCaption() {
+  //   if( $('#hero-caption').length && $('.video-hero .elementor-widget-video').length ) {
+  //     // var videoHeight = $('.video-hero .elementor-widget-video').height();
+  //     // var vH = videoHeight - 50;
+  //     // $('#hero-caption.elementor-section').css('height',vH+'px');
+
+  //     //$('#hero-caption.elementor-section .elementor-container.elementor-column-gap-default').append('<img src="'+siteThemeURL+'/assets/images/video-resizer.png" class="video-resizer" />');
+    
+      
+  //   }
+  // }
+
+
   
 
 });
