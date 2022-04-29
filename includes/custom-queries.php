@@ -276,4 +276,102 @@ function display_story_here_func( $atts ) {
 }
 
 
+/* THINGS TO DO */
+add_shortcode( 'get_post_style1', 'get_post_style1_func' );
+function get_post_style1_func($atts) {
+  global $post;
+  $a = shortcode_atts( array(
+    'category' => '',
+  ), $atts );
+
+  $output = '';
+  $category_slug = (isset($a['category']) && $a['category']) ? $a['category'] : '';
+  if( empty($category_slug) ) return '';
+
+  $args = array(
+    'post_type'     =>'post',
+    'post_status'   => 'publish',
+    'posts_per_page'=> 3,
+    'tax_query' => array(
+      array(
+        'taxonomy'  => 'category', 
+        'field'     => 'slug',
+        'terms'     => array($category_slug) 
+      )
+    )
+  );
+
+  $posts = new WP_Query($args);
+  $placeholder = THEMEURI . 'assets/images/image-resizer.png';
+  ob_start();
+  if ($posts->have_posts()) { $total = $posts->found_posts; ?>
+  <div class="section-large-small-grid">
+    <div class="flexwrap">
+    <?php $i=1; while ($posts->have_posts()) : $posts->the_post(); 
+      $thumbId = get_post_thumbnail_id(get_the_ID());
+      $img = wp_get_attachment_image_src($thumbId,'full');
+      $imgSrc = ($img) ? $img[0] : $placeholder;
+      $hasImage = ($img) ? 'hasImage':'noImage';
+      $firstCol = ($i==1) ? ' first':'';
+      ?>
+
+      <?php if ($total>1) { ?>
+
+        <?php if ($i==1) { ?>
+        <div class="post-block-column first">
+          <div class="entry <?php echo $hasImage; ?>">
+            <a href="<?php echo get_permalink(); ?>">
+              <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+              </span>
+              <span class="post-title"><strong><?php echo get_the_title(); ?></strong></span>
+            </a>
+          </div>
+        </div><div class="post-block-column second">
+
+        <?php } else { ?>
+
+          <div class="entry <?php echo $hasImage; ?>">
+            <a href="<?php echo get_permalink(); ?>">
+              <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+              </span>
+              <span class="post-title"><strong><?php echo get_the_title(); ?></strong></span>
+            </a>
+          </div>
+
+        <?php } ?>
+        
+      <?php } else { ?>
+      <div class="entry <?php echo $hasImage.$firstCol; ?>">
+        <a href="<?php echo get_permalink(); ?>">
+          <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+            <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+          </span>
+          <span class="post-title"><?php echo get_the_title(); ?></span>
+        </a>
+      </div>
+      <?php } ?>
+
+    <?php $i++; endwhile; wp_reset_postdata(); ?>
+
+      <?php if ($total>1) { ?>
+      </div> <?php //close div SECOND COLUMN ?>
+      <?php } ?>
+    </div>
+  </div>  
+  <?php }
+  $output = ob_get_contents();
+  ob_end_clean(); 
+
+  return $output;
+}
+
+
+
+
+
+
+
+
 

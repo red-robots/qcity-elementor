@@ -4,6 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+define('THEMEURI',get_template_directory_uri() . '/');
+
 /*-------------------------------------
   Adds Options page for ACF.
 ---------------------------------------*/
