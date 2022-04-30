@@ -283,6 +283,16 @@ jQuery(document).ready(function($){
   // }
 
 
+  $(window).scroll(function() {    
+    var scroll = $(window).scrollTop();
+
+    if (scroll >= 100) {
+      $('body').addClass("page-scroll");
+    } else {
+      $('body').removeClass("page-scroll");
+    }
+  });
+
   
 
 });

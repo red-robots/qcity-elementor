@@ -21,7 +21,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php wp_head(); ?>
   <?php 
   $mobileLogo =  get_field('sitelogo_mobile','option'); 
-  $mobileLogoURL = ($mobileLogo) ? $mobileLogo['url'] : '';
+  $mobileLogoURL = ( isset($mobileLogo['url']) && $mobileLogo['url'] ) ? $mobileLogo['url'] : '';
+  if($mobileLogo && is_numeric($mobileLogo)) {
+    $mobileLogoURL = wp_get_attachment_url($mobileLogo);
+  }
   ?>
 	<script>
     var qcitySiteURL = '<?php echo get_site_url() ?>';
