@@ -211,7 +211,7 @@ jQuery(document).ready(function($){
   /* homepage > giveaways section */
   /* homepage > Food & Beverage section */
   move_stuff_on_mobile_view();
-  $(window).on('resize',function(){
+  $(window).on('resize orientationchange',function(){
     move_stuff_on_mobile_view();
   });
   function move_stuff_on_mobile_view() {
@@ -245,8 +245,12 @@ jQuery(document).ready(function($){
           source.insertAfter(firstColumn);
         });
       }
-      if( $('#ThingsToDo_Second').length && $('#ThingsToDo_First').length ) {
-        $('#ThingsToDo_Second').insertAfter('#ThingsToDo_First');
+      // if( $('#ThingsToDo_Second').length && $('#ThingsToDo_First').length ) {
+      //   $('#ThingsToDo_Second').insertAfter('#ThingsToDo_First');
+      // }
+
+      if( $('#row1-second').length && $('#row1-first').length ) {
+        $('#row1-second').insertAfter('#row1-first');
       }
       
     }
