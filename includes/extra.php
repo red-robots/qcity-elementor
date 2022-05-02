@@ -303,6 +303,25 @@ function gdConvertState($name) {
 } 
 
 
+add_shortcode( 'featured_events', 'featured_events_shortcode' );
+function featured_events_shortcode( $atts ) {
+  //$resp = wp_remote_get('https://qcitymetro.test/wp-json/fetch/sponsored-events?perpage=10');
+  // if( isset($resp['body']) && $resp['body'] ) {
+  //   $events = @json_decode($resp['body']);
+  //   echo "<pre>";
+  //   print_r($events);
+  //   echo "</pre>";
+  // }
+  $resp = @file_get_contents('https://qcitymetro.test/wp-json/fetch/sponsored-events?perpage=10');
+  if( $resp ) {
+    echo "<pre>";
+    print_r($resp);
+    echo "</pre>";
+  }
+  
+}
+
+
 // add_filter( 'tribe_events_community_required_fields', 'require_organizer' );
 // function require_organizer( $fields ) {
 //     if ( ! is_array( $fields ) ) {

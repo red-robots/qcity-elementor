@@ -227,8 +227,13 @@ jQuery(document).ready(function($){
           source.insertBefore(firstBox);
         });
       }
-      if( $('#ThingsToDo_Second').length && $('#ThingsToDo_First').length ) {
-        $('#ThingsToDo_Second').insertBefore('#ThingsToDo_First');
+
+      // if( $('#ThingsToDo_Second').length && $('#ThingsToDo_First').length ) {
+      //   $('#ThingsToDo_Second').insertBefore('#ThingsToDo_First');
+      // }
+
+      if( $('#row1-second').length && $('#row1-first').length ) {
+        $('#row1-second').insertBefore('#row1-first');
       }
       
     } else {

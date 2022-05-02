@@ -2557,6 +2557,79 @@ input[type="submit"].tribe-button.submit {
   }
 }
 
+#home-row-1 {
+  h2.elementor-heading-title {
+    display: none!important;
+  }
+  .latest-post-box {
+    position: relative;
+    div {
+      height: 100%;
+    }
+    .special-latest-post {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      .post-title {
+        font-family: $font_secondary;
+        font-size: 27px;
+        line-height: 1.65;
+      }
+    }
+  }
+
+  .special-latest-post img {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    padding-left: 15px;
+    padding-right: 15px;
+    #row1-third {
+      position: relative;
+      top: -5px;
+    }
+    #row1-second, 
+    #row1-second div {
+      width: 100%;
+      float: left;
+      display: block;
+    }
+    #row1-second {
+      * {
+        height: auto;
+      }
+      .elementor-widget-wrap {
+        padding-top: 0;
+        padding-bottom: 5px;
+      }
+      .special-latest-post, a {
+        display: block;
+        width: 100%;
+        float: left;
+        position: relative;
+      }
+      .special-latest-post {
+        padding-top: 0;
+        .post-title {
+          display: block;
+          width: 100%;
+          position: absolute;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+          font-size: 20px;
+        }
+      }
+    }
+    .special-latest-post img {
+      display: block;
+      width: 100%;
+      height: auto;
+      float: left;
+    }
+  }
+}
+
 .top-story-placeholder {
   position: relative;
   .uael-post-wrapper {

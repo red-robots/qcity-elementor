@@ -182,6 +182,7 @@ function custom_category_posts_left_func( $atts ) {
       } ?>
       <script>
       jQuery(document).ready(function($){
+        var imageResizerURL = '<?php echo get_stylesheet_directory_uri() ?>/assets/images/rectangle-lg.png';
         if( $('#c-feat-post-right').length && $('.c-feat-post-group.right').length ) {
           $('.c-feat-post-group.right').appendTo('#c-feat-post-right');
         }
@@ -195,6 +196,7 @@ function custom_category_posts_left_func( $atts ) {
               var post_link = source.attr('data-post-link');
               var image_style = (imageSrc) ? ' style="background-image:url('+imageSrc+')"':'';
               var latestPost = '<article class="special-latest-post"><a href="'+post_link+'" class="latest-article"'+image_style+'>';
+                  latestPost += '<img src="'+imageResizerURL+'" alt="" class="helper">';
                   latestPost += '<span class="post-title"><span>'+post_title+'</span></span>';
                   latestPost += '</a></article>';
               parentDiv.find('.latest-post-box .elementor-widget-container').html(latestPost);
