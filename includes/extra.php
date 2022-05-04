@@ -6,6 +6,89 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define('THEMEURI',get_template_directory_uri() . '/');
 
+
+/*Remove WordPress menu from admin bar*/
+add_action( 'admin_bar_menu', 'remove_wp_logo', 999 );
+function remove_wp_logo( $wp_admin_bar ) {
+  $wp_admin_bar->remove_node( 'wp-logo' );
+}
+
+/*-------------------------------------
+  Custom client login, link and title.
+---------------------------------------*/
+function my_login_logo() { 
+  // $custom_logo_id = get_theme_mod( 'custom_logo' );
+  // $logoImg = wp_get_attachment_image_src($custom_logo_id,'large');
+  // $logo_url = ($logoImg) ? $logoImg[0] : '';
+  $logo_url = THEMEURI . 'assets/images/logo.png';
+  if($logo_url) { ?>
+  <style type="text/css">
+    body.login {
+      background-color: #D6F8F1;
+    }
+    body.login div#login h1 a {
+      background-image: url(<?php echo $logo_url; ?>);
+      background-size: contain;
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+    .login #backtoblog, .login #nav {
+      text-align: center;
+    }
+    body.login #backtoblog a, 
+    body.login #nav a {
+      color: #157394;
+      transition: all ease .3s;
+    }
+    body.login #backtoblog a:hover,
+    body.login #nav a:hover {
+      color: #75c529;
+    }
+    body.login form {
+      border: none;
+      border-radius: 0;
+    }
+    body.login #login form p.submit {
+      display: block;
+      width: 100%;
+    }
+    body.login #login form p.submit input.button-primary {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: 15px;
+    }
+    body.login.wp-core-ui .button-primary {
+      background: #bb8c20;
+      border-color: #b27f0a;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: all ease .3s;
+    }
+    body.login.wp-core-ui .button-primary:hover {
+      background: #d29a1c;
+    }
+    .login .message {
+      border-left: 4px solid #bb8c20!important;
+    }
+  </style>
+<?php }
+}
+add_action( 'login_enqueue_scripts', 'my_login_logo' );
+
+// Change Link
+function loginpage_custom_link() {
+  return get_site_url();
+}
+add_filter('login_headerurl','loginpage_custom_link');
+
+function bella_login_logo_url_title() {
+    return get_bloginfo('name');
+}
+add_filter( 'login_headertitle', 'bella_login_logo_url_title' );
+
+
 /*-------------------------------------
   Adds Options page for ACF.
 ---------------------------------------*/

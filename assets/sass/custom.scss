@@ -2558,6 +2558,9 @@ input[type="submit"].tribe-button.submit {
 }
 
 #home-row-1 {
+  > .elementor-container.elementor-column-gap-default {
+    padding: 0 10px 0 15px;
+  }
   h2.elementor-heading-title {
     display: none!important;
   }
