@@ -6,20 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define('THEMEURI',get_template_directory_uri() . '/');
 
-
-/*Remove WordPress menu from admin bar*/
-add_action( 'admin_bar_menu', 'remove_wp_logo', 999 );
-function remove_wp_logo( $wp_admin_bar ) {
-  $wp_admin_bar->remove_node( 'wp-logo' );
-}
-
 /*-------------------------------------
   Custom client login, link and title.
 ---------------------------------------*/
-function my_login_logo() { 
-  // $custom_logo_id = get_theme_mod( 'custom_logo' );
-  // $logoImg = wp_get_attachment_image_src($custom_logo_id,'large');
-  // $logo_url = ($logoImg) ? $logoImg[0] : '';
+function my_custom_loginlogo() { 
   $logo_url = THEMEURI . 'assets/images/logo.png';
   if($logo_url) { ?>
   <style type="text/css">
@@ -75,18 +65,18 @@ function my_login_logo() {
   </style>
 <?php }
 }
-add_action( 'login_enqueue_scripts', 'my_login_logo' );
+add_action( 'login_enqueue_scripts', 'my_custom_loginlogo' );
 
 // Change Link
-function loginpage_custom_link() {
+function loginpage_customlink() {
   return get_site_url();
 }
-add_filter('login_headerurl','loginpage_custom_link');
+add_filter('login_headerurl','loginpage_customlink');
 
-function bella_login_logo_url_title() {
+function customlogin_logo_url_title() {
     return get_bloginfo('name');
 }
-add_filter( 'login_headertitle', 'bella_login_logo_url_title' );
+add_filter( 'login_headertitle', 'customlogin_logo_url_title' );
 
 
 /*-------------------------------------
