@@ -96,9 +96,13 @@ function bellaworks_body_classes( $classes ) {
     }
 
     if ( is_front_page() || is_home() ) {
-        $classes[] = 'homepage';
+      $classes[] = 'homepage';
     } else {
-        $classes[] = 'subpage';
+      $classes[] = 'subpage';
+      if( is_singular() || is_page() ) {
+        global $post;
+        $classes[] = $post->post_name;
+      }
     }
 
     $browsers = ['is_iphone', 'is_chrome', 'is_safari', 'is_NS4', 'is_opera', 'is_macIE', 'is_winIE', 'is_gecko', 'is_lynx', 'is_IE', 'is_edge'];
@@ -375,46 +379,27 @@ function gdConvertState($name) {
    return $return;
 } 
 
-
-add_shortcode( 'featured_events', 'featured_events_shortcode' );
-function featured_events_shortcode( $atts ) {
-  //$resp = wp_remote_get('https://qcitymetro.test/wp-json/fetch/sponsored-events?perpage=10');
-  // if( isset($resp['body']) && $resp['body'] ) {
-  //   $events = @json_decode($resp['body']);
-  //   echo "<pre>";
-  //   print_r($events);
-  //   echo "</pre>";
-  // }
-  $resp = @file_get_contents('https://qcitymetro.test/wp-json/fetch/sponsored-events?perpage=10');
-  if( $resp ) {
-    echo "<pre>";
-    print_r($resp);
-    echo "</pre>";
+/* additional scripts inside <head>  */
+add_action('wp_head','front_wp_head_custom_scripts');
+function front_wp_head_custom_scripts() { 
+  $mobileLogo =  get_field('sitelogo_mobile','option'); 
+  $logo_black =  get_field('logo_black','option'); 
+  $logo_black_url = ( isset($logo_black['url']) && $logo_black['url'] ) ? $logo_black['url'] : '';
+  $mobileLogoURL = ( isset($mobileLogo['url']) && $mobileLogo['url'] ) ? $mobileLogo['url'] : '';
+  if($mobileLogo && is_numeric($mobileLogo)) {
+    $mobileLogoURL = wp_get_attachment_url($mobileLogo);
   }
-  
-}
+?>
+<script type="text/javascript">
+  var qcitySiteURL = '<?php echo get_site_url() ?>';
+  var siteThemeURL='<?php echo get_stylesheet_directory_uri() ?>';
+  var logoMobile = '<?php echo $mobileLogoURL ?>';
+  var logoBlack = '<?php echo get_stylesheet_directory_uri() ?>/assets/images/logo.png';
+  <?php if ( is_singular('tribe_events') ) { ?>
+  var geodir_params='';
+  <?php } ?>
+</script>
+<?php }
 
-
-// add_filter( 'tribe_events_community_required_fields', 'require_organizer' );
-// function require_organizer( $fields ) {
-//     if ( ! is_array( $fields ) ) {
-//         return $fields;
-//     }
-
-//     $fields[] = 'organizer';
-//     return $fields;
-// }
-
-// add_filter( 'tribe_events_community_required_organizer_fields', 'require_organizer_email' );
-// function require_organizer_email( $fields ) {
-//     if ( ! is_array( $fields ) ) {
-//         return $fields;
-//     }
-
-//     $fields[] = 'Organizer';
-//     $fields[] = 'Phone';
-//     $fields[] = 'Email';
-//     return $fields;
-// }
 
 

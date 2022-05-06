@@ -3,10 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// echo "<pre style='padding: 50px 0 0 350px'>";
-// echo "</pre>";
 
-//getUpcomingEventsFunc(3,0);
 function getUpcomingEventsFunc($perpage=10,$offset=0) {
   global $wpdb;
   $datenow = strtotime( date('Y-m-d H:i:s') );
@@ -28,23 +25,6 @@ function getUpcomingEventsFunc($perpage=10,$offset=0) {
 }
 
 
-// add_shortcode( 'upcoming_events', 'qct_upcoming_events_func' );
-// function qct_upcoming_events_func( $atts ) {
-//   $a = shortcode_atts( array(
-//     'perpage' => 10,
-//     'offset'  => 0
-//   ), $atts );
-//   $output = '';
-//   $res = getUpcomingEventsFunc($a['perpage'], $a['offset']);
-//   if( isset($res['records']) && $res['records'] ) {
-//     ob_start();
-//     $records = $res['records'];
-//     include( locate_template('template-parts/upcoming_events.php') );
-//     $output = ob_get_contents();
-//     ob_end_clean();
-//   }
-//   return $output;
-// }
 
 
 add_shortcode( 'upcoming_events', 'qct_upcoming_events_func' );
@@ -55,11 +35,6 @@ function qct_upcoming_events_func( $atts ) {
     'offset'  => 0
   ), $atts );
   $output = '';
-  // $events = tribe_get_events( array(
-  //   'posts_per_page' => $a['perpage'],
-  //   'start_date' => new DateTime(),
-  //   'tribe_events_cat' => 'featured'
-  // ) );
   $perpage = 10;
   $perpage = (isset($a['perpage']) && $a['perpage']) ? $a['perpage'] : 10;
   if(isset($a['show']) && $a['show']) {
@@ -77,10 +52,6 @@ function qct_upcoming_events_func( $atts ) {
       ),    
     ),
   ) );
-
-  
-
-  //_tribe_featured
 
   if($events) {
     ob_start();
@@ -209,10 +180,6 @@ function custom_category_posts_left_func( $atts ) {
     $output = ob_get_contents();
     ob_end_clean();
   }
-  
-  // echo "<pre>";
-  // print_r($items);
-  // echo "</pre>";
 
   return $output;
 }
@@ -370,6 +337,65 @@ function get_post_style1_func($atts) {
 }
 
 
+
+/* REST API 
+ * URL=> https://livincharlotte.com/wp-json/wp/v2/sponsored-events?perpage=10
+*/
+add_action( 'rest_api_init', function () {
+  // register a new endpoint
+  register_rest_route( 'wp/v2', '/sponsored-events/', array(
+    'methods' => 'GET',
+    'callback' => 'rest_api_sponsored_events', // that calls this function
+  ) );
+
+} );
+
+function rest_api_sponsored_events( WP_REST_Request $request ) {
+  
+  $perpage = ($request->get_param( 'perpage' )) ? $request->get_param( 'perpage' ) : 3;
+  $events = tribe_get_events( array(
+    'posts_per_page' => $perpage,
+    'start_date' => new DateTime(),
+    'meta_query'    => array(
+      array(
+        'key'   => '_tribe_featured',
+        'compare' => '=',
+        'value'   => 1,
+      ),    
+    ),
+  ) );
+
+  if($events) {
+    foreach($events as $e) {
+      $id = $e->ID;
+      $attachment_id = get_post_thumbnail_id($id);
+      $img = wp_get_attachment_image_src($attachment_id,'full');
+      $image_info = [];
+      if($img) {
+        $image_info['url'] = $img[0];
+        $image_info['title'] = get_the_title($attachment_id);
+        $image_info['alt'] = get_post_meta($attachment_id, '_wp_attachment_image_alt', TRUE);
+        $image_info['meta'] = wp_get_attachment_metadata($attachment_id);
+      }
+      
+
+      $taxonomy = 'tribe_events_cat';
+      $event_date['start_date_format1'] = tribe_get_start_date($id,false,'l, F d, Y');
+      $event_date['start_date_format2'] = tribe_get_start_date($id,false,'l, jS F Y');
+      $event_date['start_date_format3'] = tribe_get_start_date($id,false,'F d, Y | h:i a');
+      $event_date['start_date_format4'] = tribe_get_start_date($id,false,'F d, Y');
+
+      /* additional info */
+      $e->pagelink = get_permalink($id);
+      $e->featured_image = $image_info;
+      $e->terms = get_the_terms($e,$taxonomy);
+      $e->event_date = $event_date;
+
+    }
+  }
+
+  return $events;
+}
 
 
 

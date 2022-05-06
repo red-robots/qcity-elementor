@@ -64,8 +64,51 @@
 
 <script>
 jQuery(document).ready(function($){
-  var eventsCount = <?php echo count($records) ?>;
-  if( $(window).width() < 769 ) {
+  var eventsCount = '<?php echo count($records) ?>';
+   adjust_events_slide();
+  $(window).on('orientationchange resize',function(){
+    adjust_events_slide();
+  });
+
+  function adjust_events_slide() {
+    if( $(window).width() > 767 ) {
+      if(eventsCount>3) {
+        $('.upcoming-events-inner').slick({
+          dots: false,
+          arrows: false,
+          infinite: true,
+          autoplay: true,
+          autoplaySpeed: 2000,
+          speed: 1000,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          variableWidth: true,
+          responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3
+              }
+            },
+            {
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+              }
+            },
+            {
+              breakpoint: 600,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+              }
+            }
+          ]
+        });
+      }
+    } else {
 
       if(eventsCount>1) {
         $('.upcoming-events-inner').slick({
@@ -76,48 +119,11 @@ jQuery(document).ready(function($){
           autoplaySpeed: 2000,
           speed: 1000,
           slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToScroll: 1
         });
       }
 
-  } else {
-
-    if(eventsCount>3) {
-      $('.upcoming-events-inner').slick({
-        dots: false,
-        arrows: false,
-        infinite: true,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        speed: 1000,
-        slidesToShow: 3,
-        slidesToScroll: 3,
-        responsive: [
-          {
-            breakpoint: 1024,
-            settings: {
-              slidesToShow: 3,
-              slidesToScroll: 3
-            }
-          },
-          {
-            breakpoint: 768,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
-          },
-          {
-            breakpoint: 600,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1
-            }
-          }
-        ]
-      });
     }
-
   }
 });
 </script>

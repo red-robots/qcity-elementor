@@ -2,7 +2,10 @@ jQuery(document).ready(function($){
 
   if( $('#site-logo').length && logoMobile!==null) {
     $('#site-logo .elementor-image a').append('<img src="'+logoMobile+'" alt="" class="mobile-site-logo" />');
-  } 
+  }
+  if( $('#site-logo').length && logoBlack!==null) {
+    $('#site-logo .elementor-image a').append('<img src="'+logoBlack+'" alt="" class="site-logo-black" />');
+  }  
 
   /* Mobile Menu */
   if( $('#site-custom-header ul.elementor-nav-menu li.menu-item-has-children').length ) {
@@ -216,8 +219,8 @@ jQuery(document).ready(function($){
   });
   function move_stuff_on_mobile_view() {
     if( $(window).width() < 769 ) {
-      if( $('.elementor-element.elementor-element-28fd8fb').length ) {
-        $('.elementor-element.elementor-element-28fd8fb').insertAfter('.elementor-element.elementor-element-a0c763e');
+      if( $('#giveaways-section .elementor-column.firstpostBlock').length ) {
+        $('#giveaways-section .elementor-column.firstpostBlock').insertAfter('#giveaways-section .elementor-column.titleBlock');
       }
       if( $('.stories-two-columns .story-right-box').length ) {
         $('.stories-two-columns .story-right-box').each(function(){
@@ -237,6 +240,11 @@ jQuery(document).ready(function($){
       }
       
     } else {
+      
+      if( $('#giveaways-section .elementor-column.firstpostBlock').length ) {
+        $('#giveaways-section .elementor-column.titleBlock').insertAfter('#giveaways-section .elementor-column.firstpostBlock');
+      }
+
       if( $('.stories-two-columns .story-right-box').length ) {
         $('.stories-two-columns .story-right-box').each(function(){
           var source = $(this);
@@ -275,22 +283,6 @@ jQuery(document).ready(function($){
   $('.elementor-section.video-hero').append('<img src="'+siteThemeURL+'/assets/images/video-resizer.png" class="video-resizer" />');
   $('body').not('.elementor-editor-active').find('#hero-caption .elementor-widget-wrap').appendTo('.elementor-section.video-hero');
   
-  // heroCaption();
-  // $(window).resize(function(){
-  //   heroCaption();
-  // });
-  // function heroCaption() {
-  //   if( $('#hero-caption').length && $('.video-hero .elementor-widget-video').length ) {
-  //     // var videoHeight = $('.video-hero .elementor-widget-video').height();
-  //     // var vH = videoHeight - 50;
-  //     // $('#hero-caption.elementor-section').css('height',vH+'px');
-
-  //     //$('#hero-caption.elementor-section .elementor-container.elementor-column-gap-default').append('<img src="'+siteThemeURL+'/assets/images/video-resizer.png" class="video-resizer" />');
-    
-      
-  //   }
-  // }
-
 
   $(window).scroll(function() {    
     var scroll = $(window).scrollTop();
