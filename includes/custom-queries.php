@@ -398,7 +398,7 @@ function rest_api_sponsored_events( WP_REST_Request $request ) {
 }
 
 
-add_shortcode( 'get_three_column_posts', 'get_three_column_posts_func' );
+add_shortcode( 'three_column_posts', 'get_three_column_posts_func' );
 function get_three_column_posts_func($atts) {
   $a = shortcode_atts( array(
     'category' => '',
