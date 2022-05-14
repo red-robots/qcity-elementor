@@ -262,6 +262,12 @@ jQuery(document).ready(function($){
       }
       
     }
+
+    if( $(window).width() < 781 ) {
+      $('.section-posts-large-middle .middle-post').insertBefore('.section-posts-large-middle .postscolumn.first-group');
+    } else {
+      $('.section-posts-large-middle .middle-post').insertAfter('.section-posts-large-middle .postscolumn.first-group');
+    }
   }
   
 
