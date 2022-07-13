@@ -406,12 +406,12 @@ function five_blocks_posts_func($atts) {
 
   $output = '';
   $category_slug = (isset($a['category']) && $a['category']) ? $a['category'] : '';
+  $placeholder = THEMEURI . 'assets/images/image-resizer.png';
   if( empty($category_slug) ) return '';
 
   /* Get all sticky posts */
   $sticky = get_option( 'sticky_posts' );
   $sticky_posts = array();
-  $posts = array();
   if($sticky) {
     $args = array(
       'posts_per_page'=> 1,
@@ -427,33 +427,211 @@ function five_blocks_posts_func($atts) {
     );
     $sticky_posts = get_posts($args);
   }
-
-  $args2 = array(
-    'post_type'     =>'post',
-    'post_status'   => 'publish',
-    'tax_query' => array(
-      array(
-        'taxonomy'  => 'category', 
-        'field'     => 'slug',
-        'terms'     => array($category_slug) 
-      )
-    )
-  );
-
   if($sticky_posts) {
-    $args2['posts_per_page'] = 4;
-    $args2['post__not_in'] = $sticky;
-  } else {
-    $args2['posts_per_page'] = 5;
-  }
 
-  $posts = get_posts($args2);
-  ob_start();
-  if ($posts) { 
-    include( locate_template('template-parts/5-blocks-posts.php') );
+    $args2 = array(
+      'post_type'     =>'post',
+      'post_status'   => 'publish',
+      'posts_per_page'=> 4,
+      'post__not_in'  => $sticky,
+      'tax_query' => array(
+        array(
+          'taxonomy'  => 'category', 
+          'field'     => 'slug',
+          'terms'     => array($category_slug) 
+        )
+      )
+    );
+
+    $posts = get_posts($args2);
+    ob_start();
+    if ($posts) { 
+      $count = count($posts);
+      $slice = round($count/2);
+      $split_posts = array_chunk($posts,$slice);
+    ?>
+    <div class="section-posts-large-middle">
+      <div class="flexwrap">
+        <?php /* STICKY POST */ ?>
+        <?php
+        $sp = $sticky_posts[0];
+        $sp_id = $sp->ID;
+        $sp_title = $sp->post_title;
+        $sp_thumbId = get_post_thumbnail_id( $sp_id );
+        $sp_img = wp_get_attachment_image_src($sp_thumbId,'full');
+        $sp_imgSrc = ($sp_img) ? $sp_img[0] : $placeholder;
+        $sp_hasImage = ($sp_img) ? 'hasImage':'noImage';
+        ?>
+
+        <?php if ( isset($split_posts[0]) && $split_posts[0] ) { ?>
+        <div class="postscolumn first-group">
+          <?php foreach ($split_posts[0] as $p) { 
+          $postid = $p->ID;
+          $posttitle = $p->post_title;
+          $thumbId = get_post_thumbnail_id($postid);
+          $img = wp_get_attachment_image_src($thumbId,'full');
+          $imgSrc = ($img) ? $img[0] : $placeholder;
+          $hasImage = ($img) ? 'hasImage':'noImage';
+          ?>
+          <div class="entry small-block <?php echo $hasImage; ?>">
+            <a href="<?php echo get_permalink($postid); ?>">
+              <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+              </span>
+              <span class="post-title"><?php echo $posttitle; ?></span>
+            </a>
+          </div>
+          <?php } ?>
+        </div> 
+        <?php } ?>
+
+        <div class="middle-post sticky-post">
+          <div class="entry <?php echo $sp_hasImage ?>">
+            <a href="<?php echo get_permalink($sp_id); ?>">
+              <span class="bg" style="background-image:url('<?php echo $sp_imgSrc ?>')">
+                <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+              </span>
+              <span class="post-title"><span><?php echo $sp_title; ?></span></span>
+            </a>
+          </div>
+        </div>
+
+
+        <?php if ( isset($split_posts[1]) && $split_posts[1] ) { ?>
+        <div class="postscolumn second-group">
+          <?php foreach ($split_posts[1] as $p) { 
+          $postid = $p->ID;
+          $posttitle = $p->post_title;
+          $thumbId = get_post_thumbnail_id($postid);
+          $img = wp_get_attachment_image_src($thumbId,'full');
+          $imgSrc = ($img) ? $img[0] : $placeholder;
+          $hasImage = ($img) ? 'hasImage':'noImage';
+          ?>
+          <div class="entry small-block <?php echo $hasImage; ?>">
+            <a href="<?php echo get_permalink($postid); ?>">
+              <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+              </span>
+              <span class="post-title"><?php echo $posttitle; ?></span>
+            </a>
+          </div>
+          <?php } ?>
+        </div> 
+        <?php } ?>
+        
+      </div>
+    </div>  
+    <?php }
+    $output = ob_get_contents();
+    ob_end_clean(); 
+
+  } else {
+
+    $args2 = array(
+      'post_type'     =>'post',
+      'post_status'   => 'publish',
+      'posts_per_page'=> 5,
+      'tax_query' => array(
+        array(
+          'taxonomy'  => 'category', 
+          'field'     => 'slug',
+          'terms'     => array($category_slug) 
+        )
+      )
+    );
+
+    $posts = get_posts($args2);
+    $firstpost = array();
+    ob_start();
+    if($posts) {
+      $split_posts = array();
+      $count = count($posts);
+      if($count>1) {
+        $slice = round($count/2);
+        $split_posts = array_chunk($posts,$slice);
+      } else {
+        $split_posts[] = $posts;
+      }
+      ?>
+      <div class="section-posts-large-middle">
+        <div class="flexwrap">
+
+          <?php if ( isset($split_posts[0]) && $split_posts[0] ) { ?>
+          <div class="postscolumn first-group">
+            <?php $n=1; foreach ($split_posts[0] as $p) { 
+            $postid = $p->ID;
+            $posttitle = $p->post_title;
+            $thumbId = get_post_thumbnail_id($postid);
+            $img = wp_get_attachment_image_src($thumbId,'full');
+            $imgSrc = ($img) ? $img[0] : $placeholder;
+            $hasImage = ($img) ? 'hasImage':'noImage'; 
+            if($n==1) {
+              $firstpost[$postid] = $p;
+            } else { ?>
+            <div class="entry small-block <?php echo $hasImage; ?>">
+              <a href="<?php echo get_permalink($postid); ?>">
+                <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                  <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+                </span>
+                <span class="post-title"><?php echo $posttitle; ?></span>
+              </a>
+            </div>
+            <?php } ?>
+            <?php $n++; } ?>
+          </div> 
+          <?php } ?>
+
+          <?php if ($firstpost) { ?>
+          <div class="middle-post first-post">
+            <?php foreach ($firstpost as $fp) { 
+              $fp_postid = $fp->ID;
+              $fp_posttitle = $fp->post_title;
+              $fp_thumbId = get_post_thumbnail_id($fp_postid);
+              $fp_img = wp_get_attachment_image_src($fp_thumbId,'full');
+              $fp_imgSrc = ($fp_img) ? $fp_img[0] : $placeholder;
+              $fp_hasImage = ($fp_img) ? 'hasImage':'noImage';
+              ?>
+            <div class="entry <?php echo $fp_hasImage ?>">
+              <a href="<?php echo get_permalink($sp_id); ?>">
+                <span class="bg" style="background-image:url('<?php echo $fp_imgSrc ?>')">
+                  <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+                </span>
+                <span class="post-title"><span><?php echo $fp_posttitle; ?></span></span>
+              </a>
+            </div>
+            <?php } ?>
+          </div> 
+          <?php } ?>
+
+          <?php if ( isset($split_posts[1]) && $split_posts[1] ) { ?>
+          <div class="postscolumn second-group">
+            <?php foreach ($split_posts[1] as $p) { 
+            $postid = $p->ID;
+            $posttitle = $p->post_title;
+            $thumbId = get_post_thumbnail_id($postid);
+            $img = wp_get_attachment_image_src($thumbId,'full');
+            $imgSrc = ($img) ? $img[0] : $placeholder;
+            $hasImage = ($img) ? 'hasImage':'noImage';
+            ?>
+            <div class="entry small-block <?php echo $hasImage; ?>">
+              <a href="<?php echo get_permalink($postid); ?>">
+                <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                  <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+                </span>
+                <span class="post-title"><?php echo $posttitle; ?></span>
+              </a>
+            </div>
+            <?php } ?>
+          </div> 
+          <?php } ?>
+
+        </div>
+      </div>
+    <?php }
+    $output = ob_get_contents();
+    ob_end_clean(); 
+
   }
-  $output = ob_get_contents();
-  ob_end_clean(); 
 
   return $output;
 }
@@ -467,12 +645,12 @@ function four_blocks_posts_func($atts) {
 
   $output = '';
   $category_slug = (isset($a['category']) && $a['category']) ? $a['category'] : '';
+  $placeholder = THEMEURI . 'assets/images/image-resizer.png';
   if( empty($category_slug) ) return '';
 
   /* Get all sticky posts */
   $sticky = get_option( 'sticky_posts' );
   $sticky_posts = array();
-  $posts = array();
   if($sticky) {
     $args = array(
       'posts_per_page'=> 1,
@@ -488,50 +666,216 @@ function four_blocks_posts_func($atts) {
     );
     $sticky_posts = get_posts($args);
   }
-
-  $args2 = array(
-    'post_type'     =>'post',
-    'post_status'   => 'publish',
-    'tax_query' => array(
-      array(
-        'taxonomy'  => 'category', 
-        'field'     => 'slug',
-        'terms'     => array($category_slug) 
-      )
-    )
-  );
-
   if($sticky_posts) {
-    $args2['posts_per_page'] = 3;
-    $args2['post__not_in'] = $sticky;
-  } else {
-    $args2['posts_per_page'] = 4;
-  }
 
-  $posts = get_posts($args2);
-  ob_start();
-  if ($posts) { 
-    include( locate_template('template-parts/4-blocks-posts.php') );
+    $args2 = array(
+      'post_type'     =>'post',
+      'post_status'   => 'publish',
+      'posts_per_page'=> 4,
+      'post__not_in'  => $sticky,
+      'tax_query' => array(
+        array(
+          'taxonomy'  => 'category', 
+          'field'     => 'slug',
+          'terms'     => array($category_slug) 
+        )
+      )
+    );
+
+    $posts = get_posts($args2);
+    ob_start();
+    if ($posts) { 
+      $count = count($posts);
+      $slice = round($count/2);
+      $split_posts = array_chunk($posts,$slice);
+    ?>
+    <div class="section-four-blocks-posts">
+      <div class="flexwrap">
+        <?php /* STICKY POST */ ?>
+        <?php
+        $sp = $sticky_posts[0];
+        $sp_id = $sp->ID;
+        $sp_title = $sp->post_title;
+        $sp_thumbId = get_post_thumbnail_id( $sp_id );
+        $sp_img = wp_get_attachment_image_src($sp_thumbId,'full');
+        $sp_imgSrc = ($sp_img) ? $sp_img[0] : $placeholder;
+        $sp_hasImage = ($sp_img) ? 'hasImage':'noImage';
+        ?>
+
+        <?php if ( isset($split_posts[0]) && $split_posts[0] ) { ?>
+        <div class="postscolumn first-group">
+          <?php foreach ($split_posts[0] as $p) { 
+          $postid = $p->ID;
+          $posttitle = $p->post_title;
+          $thumbId = get_post_thumbnail_id($postid);
+          $img = wp_get_attachment_image_src($thumbId,'full');
+          $imgSrc = ($img) ? $img[0] : $placeholder;
+          $hasImage = ($img) ? 'hasImage':'noImage';
+          ?>
+          <div class="entry small-block <?php echo $hasImage; ?>">
+            <a href="<?php echo get_permalink($postid); ?>">
+              <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+              </span>
+              <span class="post-title"><?php echo $posttitle; ?></span>
+            </a>
+          </div>
+          <?php } ?>
+        </div> 
+        <?php } ?>
+
+        <?php if ( isset($split_posts[1]) && $split_posts[1] ) { ?>
+        <div class="postscolumn second-group">
+          <?php foreach ($split_posts[1] as $p) { 
+          $postid = $p->ID;
+          $posttitle = $p->post_title;
+          $thumbId = get_post_thumbnail_id($postid);
+          $img = wp_get_attachment_image_src($thumbId,'full');
+          $imgSrc = ($img) ? $img[0] : $placeholder;
+          $hasImage = ($img) ? 'hasImage':'noImage';
+          ?>
+          <div class="entry small-block <?php echo $hasImage; ?>">
+            <a href="<?php echo get_permalink($postid); ?>">
+              <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+              </span>
+              <span class="post-title"><?php echo $posttitle; ?></span>
+            </a>
+          </div>
+          <?php } ?>
+        </div> 
+        <?php } ?>
+
+        <div class="middle-post sticky-post">
+          <div class="entry <?php echo $sp_hasImage ?>">
+            <a href="<?php echo get_permalink($sp_id); ?>">
+              <span class="bg" style="background-image:url('<?php echo $sp_imgSrc ?>')">
+                <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+              </span>
+              <span class="post-title"><span><?php echo $sp_title; ?></span></span>
+            </a>
+          </div>
+        </div>
+        
+      </div>
+    </div>  
+    <?php }
+    $output = ob_get_contents();
+    ob_end_clean(); 
+
+  } else {
+
+    $args2 = array(
+      'post_type'     =>'post',
+      'post_status'   => 'publish',
+      'posts_per_page'=> 5,
+      'tax_query' => array(
+        array(
+          'taxonomy'  => 'category', 
+          'field'     => 'slug',
+          'terms'     => array($category_slug) 
+        )
+      )
+    );
+
+    $posts = get_posts($args2);
+    $firstpost = array();
+    ob_start();
+    if($posts) {
+      $split_posts = array();
+      $count = count($posts);
+      if($count>1) {
+        $slice = round($count/2);
+        $split_posts = array_chunk($posts,$slice);
+      } else {
+        $split_posts[] = $posts;
+      }
+      ?>
+      <div class="section-four-blocks-posts">
+        <div class="flexwrap">
+
+          <?php if ( isset($split_posts[0]) && $split_posts[0] ) { ?>
+          <div class="postscolumn first-group">
+            <?php $n=1; foreach ($split_posts[0] as $p) { 
+            $postid = $p->ID;
+            $posttitle = $p->post_title;
+            $thumbId = get_post_thumbnail_id($postid);
+            $img = wp_get_attachment_image_src($thumbId,'full');
+            $imgSrc = ($img) ? $img[0] : $placeholder;
+            $hasImage = ($img) ? 'hasImage':'noImage'; 
+            if($n==1) {
+              $firstpost[$postid] = $p;
+            } else { ?>
+            <div class="entry small-block <?php echo $hasImage; ?>">
+              <a href="<?php echo get_permalink($postid); ?>">
+                <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                  <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+                </span>
+                <span class="post-title"><?php echo $posttitle; ?></span>
+              </a>
+            </div>
+            <?php } ?>
+            <?php $n++; } ?>
+          </div> 
+          <?php } ?>
+
+          <?php if ( isset($split_posts[1]) && $split_posts[1] ) { ?>
+          <div class="postscolumn second-group">
+            <?php foreach ($split_posts[1] as $p) { 
+            $postid = $p->ID;
+            $posttitle = $p->post_title;
+            $thumbId = get_post_thumbnail_id($postid);
+            $img = wp_get_attachment_image_src($thumbId,'full');
+            $imgSrc = ($img) ? $img[0] : $placeholder;
+            $hasImage = ($img) ? 'hasImage':'noImage';
+            ?>
+            <div class="entry small-block <?php echo $hasImage; ?>">
+              <a href="<?php echo get_permalink($postid); ?>">
+                <span class="bg" style="background-image:url('<?php echo $imgSrc ?>')">
+                  <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+                </span>
+                <span class="post-title"><?php echo $posttitle; ?></span>
+              </a>
+            </div>
+            <?php } ?>
+          </div> 
+          <?php } ?>
+
+
+          <?php if ($firstpost) { ?>
+          <div class="middle-post first-post">
+            <?php foreach ($firstpost as $fp) { 
+              $fp_postid = $fp->ID;
+              $fp_posttitle = $fp->post_title;
+              $fp_thumbId = get_post_thumbnail_id($fp_postid);
+              $fp_img = wp_get_attachment_image_src($fp_thumbId,'full');
+              $fp_imgSrc = ($fp_img) ? $fp_img[0] : $placeholder;
+              $fp_hasImage = ($fp_img) ? 'hasImage':'noImage';
+              ?>
+            <div class="entry <?php echo $fp_hasImage ?>">
+              <a href="<?php echo get_permalink($sp_id); ?>">
+                <span class="bg" style="background-image:url('<?php echo $fp_imgSrc ?>')">
+                  <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+                </span>
+                <span class="post-title"><span><?php echo $fp_posttitle; ?></span></span>
+              </a>
+            </div>
+            <?php } ?>
+          </div> 
+          <?php } ?>
+
+        </div>
+      </div>
+    <?php }
+    $output = ob_get_contents();
+    ob_end_clean(); 
+
   }
-  $output = ob_get_contents();
-  ob_end_clean(); 
 
   return $output;
 }
 
 
-function get_category_info($term_slug,$field=null) {
-  global $wpdb;
-  if( empty($term_slug) ) return '';
-  $term_slug = trim($term_slug);
-  $query = "SELECT * FROM " . $wpdb->prefix . "terms WHERE slug='".$term_slug."'";
-  $result = $wpdb->get_row($query);
-  if($field) {
-    return ($result) ? $result->$field : '';
-  } else {
-    return ($result) ? $result : '';
-  }
-}
 
 
 

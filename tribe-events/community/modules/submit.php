@@ -121,12 +121,12 @@ jQuery(document).ready(function($){
 
   var errorMessages = '';
   $(".tribe-community-events.form form").validate({
-    rules: {
-      organizer_data: "required"
-    },
-    messages: {
-      organizer_data: "Organizer Contact Details is required.",
-    },
+    // rules: {
+    //   organizer_data: "required"
+    // },
+    // messages: {
+    //   organizer_data: "Organizer Contact Details is required.",
+    // },
     errorElement: "div",
     errorPlacement: function(error, element) {
       var placement = $(element).data('error');

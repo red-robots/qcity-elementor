@@ -171,7 +171,7 @@ jQuery(document).ready(function($){
           // Only prevent default if animation is actually gonna happen
           event.preventDefault();
           $('html, body').animate({
-            scrollTop: target.offset().top
+            scrollTop: target.offset().top - 70
           }, 1000, function() {
             // Callback after animation
             // Must change focus!
@@ -268,6 +268,20 @@ jQuery(document).ready(function($){
     } else {
       $('.section-posts-large-middle .middle-post').insertAfter('.section-posts-large-middle .postscolumn.first-group');
     }
+
+    if( $(window).width() < 845 ) {
+      if( $('.section-four-blocks .first-block-posts').length && $('.section-four-blocks .last-block-post').length ) {
+        $('.section-four-blocks .last-block-post').insertAfter('.section-four-blocks .title-block-info');
+      } 
+    } else {
+      if( $('.section-four-blocks .first-block-posts').length && $('.section-four-blocks .last-block-post').length ) {
+        $('.section-four-blocks .first-block-posts .last-block-post').insertAfter('.section-four-blocks .first-block-posts');
+      }
+    }
+
+    if( $('.post-heading-block').length && $('.title-block-info').length ) {
+      $('.post-heading-block').insertAfter('.title-block-info  span.bg');
+    } 
   }
   
 
