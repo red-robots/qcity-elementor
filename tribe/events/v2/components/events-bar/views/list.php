@@ -21,10 +21,21 @@
 >
 	<ul class="tribe-events-c-view-selector__list">
 		<?php foreach ( $public_views as $public_view_slug => $public_view_data ) : ?>
-			<?php $this->template(
+			<?php 
+      if($public_view_slug=='photo') {
+        if( !str_contains($public_view_data->view_url,'?hide_subsequent_recurrences') ) {
+          $public_view_data->view_url .= '?hide_subsequent_recurrences=1';
+        }
+      } else {
+        $public_view_data->view_url = str_replace('?hide_subsequent_recurrences=1','',$public_view_data->view_url);
+      }
+
+      $this->template(
 				'components/events-bar/views/list/item',
 				[ 'public_view_slug' => $public_view_slug, 'public_view_data' => $public_view_data ]
-			); ?>
+			); 
+
+      ?>
 		<?php endforeach; ?>
 	</ul>
 </div>

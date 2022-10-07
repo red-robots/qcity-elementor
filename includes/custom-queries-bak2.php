@@ -342,24 +342,13 @@ function get_post_style1_func($atts) {
  * URL=> https://livincharlotte.com/wp-json/wp/v2/sponsored-events?perpage=10
 */
 add_action( 'rest_api_init', function () {
-	// register a new endpoint
-	register_rest_route( 'wp/v2', '/sponsored-events/', array(
-		'methods' => 'GET',
-		'callback' => 'rest_api_sponsored_events', // that calls this function
-	) );
+  // register a new endpoint
+  register_rest_route( 'wp/v2', '/sponsored-events/', array(
+    'methods' => 'GET',
+    'callback' => 'rest_api_sponsored_events', // that calls this function
+  ) );
 
-	register_rest_route( 'wp/v2', '/exclude-posts/', array(
-		'methods' => 'GET',
-		'callback' => 'rest_api_posts_queries_func', // that calls this function
-	) );
 } );
-
-function rest_api_posts_queries_func() {
-  global $wpdb;
-  $query = "SELECT p.ID FROM " . $wpdb->prefix . "posts p, " . $wpdb->prefix ."postmeta m WHERE p.ID=m.post_id AND p.post_status='publish' AND p.post_type='post' AND m.meta_key='hidePostExternal' AND m.meta_value!=''";
-  $result = $wpdb->get_results($query);
-  return $result;
-}
 
 function rest_api_sponsored_events( WP_REST_Request $request ) {
   
@@ -422,7 +411,6 @@ function five_blocks_posts_func($atts) {
   /* Get all sticky posts */
   $sticky = get_option( 'sticky_posts' );
   $sticky_posts = array();
-  $posts = array();
   if($sticky) {
     $args = array(
       'posts_per_page'=> 1,
@@ -438,33 +426,55 @@ function five_blocks_posts_func($atts) {
     );
     $sticky_posts = get_posts($args);
   }
-
-  $args2 = array(
-    'post_type'     =>'post',
-    'post_status'   => 'publish',
-    'tax_query' => array(
-      array(
-        'taxonomy'  => 'category', 
-        'field'     => 'slug',
-        'terms'     => array($category_slug) 
-      )
-    )
-  );
-
   if($sticky_posts) {
-    $args2['posts_per_page'] = 4;
-    $args2['post__not_in'] = $sticky;
-  } else {
-    $args2['posts_per_page'] = 5;
-  }
 
-  $posts = get_posts($args2);
-  ob_start();
-  if ($posts) { 
-    include( locate_template('template-parts/5-blocks-posts.php') );
+    $args2 = array(
+      'post_type'     =>'post',
+      'post_status'   => 'publish',
+      'posts_per_page'=> 4,
+      'post__not_in'  => $sticky,
+      'tax_query' => array(
+        array(
+          'taxonomy'  => 'category', 
+          'field'     => 'slug',
+          'terms'     => array($category_slug) 
+        )
+      )
+    );
+
+    $posts = get_posts($args2);
+    ob_start();
+    if ($posts) { 
+      include( locate_template('template-parts/5-blocks-posts.php') );
+    }
+    $output = ob_get_contents();
+    ob_end_clean(); 
+
+  } else {
+
+    $args2 = array(
+      'post_type'     =>'post',
+      'post_status'   => 'publish',
+      'posts_per_page'=> 5,
+      'tax_query' => array(
+        array(
+          'taxonomy'  => 'category', 
+          'field'     => 'slug',
+          'terms'     => array($category_slug) 
+        )
+      )
+    );
+
+    $posts = get_posts($args2);
+    $firstpost = array();
+    ob_start();
+    if ($posts) { 
+      include( locate_template('template-parts/5-blocks-posts.php') );
+    }
+    $output = ob_get_contents();
+    ob_end_clean(); 
+
   }
-  $output = ob_get_contents();
-  ob_end_clean(); 
 
   return $output;
 }
@@ -474,23 +484,15 @@ add_shortcode( 'four_blocks_posts', 'four_blocks_posts_func' );
 function four_blocks_posts_func($atts) {
   $a = shortcode_atts( array(
     'category' => '',
-    'title' => '',
-    'main' => 'right',
-    'blurb' => '',
   ), $atts );
 
   $output = '';
-  $blurb = (isset($a['blurb']) && $a['blurb']) ? $a['blurb'] : '';
-  $custom_title = (isset($a['title']) && $a['title']) ? $a['title'] : '';
-  $main = (isset($a['main']) && $a['main']) ? $a['main'] : 'right';
   $category_slug = (isset($a['category']) && $a['category']) ? $a['category'] : '';
-
   if( empty($category_slug) ) return '';
 
   /* Get all sticky posts */
   $sticky = get_option( 'sticky_posts' );
   $sticky_posts = array();
-  $posts = array();
   if($sticky) {
     $args = array(
       'posts_per_page'=> 1,
@@ -506,33 +508,55 @@ function four_blocks_posts_func($atts) {
     );
     $sticky_posts = get_posts($args);
   }
-
-  $args2 = array(
-    'post_type'     =>'post',
-    'post_status'   => 'publish',
-    'tax_query' => array(
-      array(
-        'taxonomy'  => 'category', 
-        'field'     => 'slug',
-        'terms'     => array($category_slug) 
-      )
-    )
-  );
-
   if($sticky_posts) {
-    $args2['posts_per_page'] = 3;
-    $args2['post__not_in'] = $sticky;
-  } else {
-    $args2['posts_per_page'] = 4;
-  }
 
-  $posts = get_posts($args2);
-  ob_start();
-  if ($posts) { 
-    include( locate_template('template-parts/4-blocks-posts.php') );
+    $args2 = array(
+      'post_type'     =>'post',
+      'post_status'   => 'publish',
+      'posts_per_page'=> 3,
+      'post__not_in'  => $sticky,
+      'tax_query' => array(
+        array(
+          'taxonomy'  => 'category', 
+          'field'     => 'slug',
+          'terms'     => array($category_slug) 
+        )
+      )
+    );
+
+    $posts = get_posts($args2);
+    ob_start();
+    if ($posts) { 
+      include( locate_template('template-parts/4-blocks-posts.php') );
+    }
+    $output = ob_get_contents();
+    ob_end_clean(); 
+
+  } else {
+
+    $args2 = array(
+      'post_type'     =>'post',
+      'post_status'   => 'publish',
+      'posts_per_page'=> 4,
+      'tax_query' => array(
+        array(
+          'taxonomy'  => 'category', 
+          'field'     => 'slug',
+          'terms'     => array($category_slug) 
+        )
+      )
+    );
+
+    $posts = get_posts($args2);
+    $firstpost = array();
+    ob_start();
+    if ($posts) { 
+      include( locate_template('template-parts/4-blocks-posts.php') );
+    }
+    $output = ob_get_contents();
+    ob_end_clean(); 
+
   }
-  $output = ob_get_contents();
-  ob_end_clean(); 
 
   return $output;
 }

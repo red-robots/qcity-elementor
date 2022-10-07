@@ -171,7 +171,7 @@ jQuery(document).ready(function($){
           // Only prevent default if animation is actually gonna happen
           event.preventDefault();
           $('html, body').animate({
-            scrollTop: target.offset().top - 70
+            scrollTop: target.offset().top - 150
           }, 1000, function() {
             // Callback after animation
             // Must change focus!
@@ -313,6 +313,18 @@ jQuery(document).ready(function($){
       $('body').removeClass("page-scroll");
     }
   });
+
+
+  /* REST API */
+  if( $('.top_section_articles') ) {
+    $.ajax({
+      url:frontajax.jsonUrl+'/1'
+    }).done(function(response){
+      if(response.output) {
+        $('.top_section_articles').html(response.output);
+      }
+    });
+  }
 
   
 
