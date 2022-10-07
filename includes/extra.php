@@ -809,5 +809,3 @@ function myfunc_styles_scripts(){
 add_action( 'wp_enqueue_scripts', 'myfunc_styles_scripts' );
 
 
-
-
