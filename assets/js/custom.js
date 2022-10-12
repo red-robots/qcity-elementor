@@ -1,10 +1,14 @@
 jQuery(document).ready(function($){
 
   if( $('#site-logo').length && logoMobile!==null) {
-    $('#site-logo .elementor-image a').append('<img src="'+logoMobile+'" alt="" class="mobile-site-logo" />');
+    if( $('.mobile-site-logo').length==0 ) {
+      $('#site-logo .elementor-image a').append('<img src="'+logoMobile+'" alt="" class="mobile-site-logo" />');
+    }
   }
   if( $('#site-logo').length && logoBlack!==null) {
-    $('#site-logo .elementor-image a').append('<img src="'+logoBlack+'" alt="" class="site-logo-black" />');
+    if( $('.site-logo-black').length==0 ) {
+      $('#site-logo .elementor-image a').append('<img src="'+logoBlack+'" alt="" class="site-logo-black" />');
+    }
   }  
 
   /* Mobile Menu */
