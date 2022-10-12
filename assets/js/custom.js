@@ -318,14 +318,99 @@ jQuery(document).ready(function($){
   /* REST API */
   if( $('.top_section_articles') ) {
     $.ajax({
-      url:frontajax.jsonUrl+'/1'
+      url:frontajax.jsonUrl+'/top'
     }).done(function(response){
       if(response.output) {
         $('.top_section_articles').html(response.output);
       }
+      collectExistingPosts();
     });
   }
 
+  if( $('.single-post-restapi').length ) {
+    $('.single-post-restapi').each(function(){
+      var id = $(this).attr('data-post');
+      $.ajax({
+        url:frontajax.jsonUrl+'/single/?pid='+id
+      }).done(function(response){
+        if(response.output) {
+          $('#single-post-'+id).html(response.output);
+        }
+        collectExistingPosts();
+      });
+    });
+  }
+
+
+  if( $('.recent-posts-restapi').length ) {
+    $.ajax({
+      url:frontajax.jsonUrl+'/recent/?pg=1&perpage=5'
+    }).done(function(response){
+      if(response.output) {
+        $('.recent-posts-restapi').html(response.output);
+        if(response.button) {
+          $(response.button).appendTo('.recent-posts-restapi');
+        }
+      }
+      
+      /* MORE BUTTON */
+      $('#morePostBtn').on('click',function(e){
+        e.preventDefault();
+        var target = $(this);
+        var nextpage = $(this).attr('data-page');
+        var totalpages = $(this).attr('data-totalpages');
+        var pagenum = parseInt(nextpage) + 1;
+        var functionURL = frontajax.jsonUrl+'/recent/?pg='+pagenum+'&perpage=5';
+        $.ajax({
+          type: 'GET',
+          url: functionURL,
+          data: {'pg':pagenum,'perpage':5},
+          dataType:'json',
+          success: function (data) {
+            if(data.output) {
+              $(data.output).appendTo('.recent-posts-restapi');
+            }
+            if(pagenum==totalpages) {
+              $('.paginate-button').remove();
+            } else {
+              target.attr('data-page',pagenum);
+            }
+          },
+          complete:function(){
+            $('.paginate-button').appendTo('.recent-posts-restapi');
+          },
+          error: function(xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            console.log(err.Message);
+          }
+        });
+      });
+
+    });
+  }
+
+  function collectExistingPosts() {
+    if( $('.recent-posts-restapi').length ) {
+      var existingPosts = [];
+      if( $('[data-post]').length ) {
+        $('[data-post]').each(function(){
+          var id = $(this).attr('data-post');
+          existingPosts.push(id);
+        });
+      }
+
+      $.ajax({
+        url:frontajax.jsonUrl+'/existing/?pids='+existingPosts
+      }).done(function(response){
+      });
+    }
+  }
+
+  function remove_duplicates_es6(arr) {
+    let s = new Set(arr);
+    let it = s.values();
+    return Array.from(it);
+  }
   
 
 });

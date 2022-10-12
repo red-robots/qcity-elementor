@@ -631,7 +631,6 @@ function top_section_content() {
     $args['posts_per_page'] = 3;
   }
 
-  $postIDs = array();
   $posts = get_posts($args);
   $output = '';
   $placeholder = get_stylesheet_directory_uri() . '/assets/images/rectangle.png';
@@ -643,9 +642,9 @@ function top_section_content() {
     $img = wp_get_attachment_image_src($post_thumbnail_id,'full');
     $imgStyle = ($img) ? ' style="background-image:url('.$img[0].')"':'';
     $sticky_category = get_the_category($stickyID);
-    $postIDs[$stickyID] = $stickyID; ?>
+    ?>
 
-    <div data-post="<?php echo $stickyID ?>" class="sticky-post <?php echo ($img) ? 'has-image':'no-image' ?>">
+    <div class="sticky-post <?php echo ($img) ? 'has-image':'no-image' ?>">
       <a id="stickypost" href="<?php echo get_permalink($stickyID); ?>"<?php echo $imgStyle ?>>
         <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
         <span class="caption">
@@ -665,9 +664,8 @@ function top_section_content() {
         $img = wp_get_attachment_image_src($thumbnailID,'full');
         $imgStyle = ($img) ? ' style="background-image:url('.$img[0].')"':'';
         $category = get_the_category($postID);
-        $postIDs[$postID] = $postID;
         ?>
-        <div data-post="<?php echo $postID ?>" class="post <?php echo ($img) ? 'has-image':'no-image' ?>">
+        <div class="post <?php echo ($img) ? 'has-image':'no-image' ?>">
           <div class="inner">
             <a href="<?php echo get_permalink($post->ID) ?>" class="postlink"<?php echo $imgStyle ?>>
               <img src="<?php echo $placeholder ?>" alt="">
@@ -697,9 +695,8 @@ function top_section_content() {
           $sticky_img = wp_get_attachment_image_src($sticky_thumbnailID,'full');
           $sticky_imgStyle = ($sticky_img) ? ' style="background-image:url('.$sticky_img[0].')"':'';
           $sticky_category = get_the_category($sticky_postID);
-          $postIDs[$sticky_postID] = $sticky_postID;
         ?>
-        <div data-post="<?php echo $sticky_postID ?>" class="sticky-post <?php echo ($sticky_img) ? 'has-image':'no-image' ?>">
+        <div class="sticky-post <?php echo ($sticky_img) ? 'has-image':'no-image' ?>">
           <a id="stickypost" href="<?php echo get_permalink($sticky_postID); ?>"<?php echo $sticky_imgStyle ?>>
             <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
             <span class="caption">
@@ -718,10 +715,8 @@ function top_section_content() {
             $thumbnailID = get_post_thumbnail_id( $postID );
             $img = wp_get_attachment_image_src($thumbnailID,'full');
             $imgStyle = ($img) ? ' style="background-image:url('.$img[0].')"':'';
-            $category = get_the_category($postID); 
-            $postIDs[$postID] = $postID;
-            ?>
-            <div data-post="<?php echo $postID ?>" class="post <?php echo ($img) ? 'has-image':'no-image' ?>">
+            $category = get_the_category($postID); ?>
+            <div class="post <?php echo ($img) ? 'has-image':'no-image' ?>">
               <div class="inner">
                 <a href="<?php echo get_permalink($post->ID) ?>" class="postlink"<?php echo $imgStyle ?>>
                   <img src="<?php echo $placeholder ?>" alt="">
@@ -748,20 +743,13 @@ function top_section_content() {
   return $respond;
 }
 
-
-add_shortcode('single_post', 'get_single_post_shortcode');
-function get_single_post_shortcode($atts) {
-  $a = shortcode_atts( array(
+add_shortcode('single_post', 'get_single_post_func');
+function get_single_post_func($atts) {
+  extract(shortcode_atts(array(
     'id' => '',
-  ), $atts );
-  $id = $a['id'];
-  return '<div data-post="'.$id.'" id="single-post-'.$id.'" class="single-post-restapi"></div>';
-}
-
-
-function get_single_post_func(WP_REST_Request $request) {
+  ), $atts));
+  
   $output = '';
-  $id = $request->get_param( 'pid' );
   if( $post = get_post($id) ) { 
     ob_start(); 
     $category = get_the_category($id);
@@ -771,156 +759,44 @@ function get_single_post_func(WP_REST_Request $request) {
     $img = wp_get_attachment_image_src($thumbnailID,'full');
     $termlink = ($category) ? get_term_link( $category[0], 'category') : '';
     $imgStyle = ($img) ? ' style="background-image:url('.$img[0].')"':'';
-    $placeholder = get_stylesheet_directory_uri() . '/assets/images/rectangle-lg.png'; ?>
-    <div data-post="<?php echo $id ?>" class="home-single-post-block <?php echo ($img) ? 'has-image':'no-image' ?>">
-      <div class="inner">
-        <figure<?php echo $imgStyle ?>>
-          <img src="<?php echo $placeholder ?>" alt="">
-        </figure>
-        <div class="text">
-          <?php if ($category) { ?>
-          <a class="category" href="<?php echo $termlink ?>"><span><?php echo $category[0]->name ?></span></a>  
-          <?php } ?>
-          <h3 class="posttitle"><a href="<?php echo get_permalink($id) ?>"><?php echo $post->post_title ?></a></h3>
-          <?php if ($excerpt) { ?>
-          <div class="excerpt"><a href="<?php echo get_permalink($id) ?>"><?php echo $excerpt ?></a></div> 
-          <?php } ?>
-        </div>
+    $placeholder = get_stylesheet_directory_uri() . '/assets/images/rectangle-lg.png';
+    ?>
+  <div class="home-single-post-block <?php echo ($img) ? 'has-image':'no-image' ?>">
+    <div class="inner">
+      <figure<?php echo $imgStyle ?>>
+        <img src="<?php echo $placeholder ?>" alt="">
+      </figure>
+      <div class="text">
+        <?php if ($category) { ?>
+        <a class="category" href="<?php echo $termlink ?>"><span><?php echo $category[0]->name ?></span></a>  
+        <?php } ?>
+        <h3 class="posttitle"><a href="<?php echo get_permalink($id) ?>"><?php echo $post->post_title ?></a></h3>
+        <?php if ($excerpt) { ?>
+        <div class="excerpt"><a href="<?php echo get_permalink($id) ?>"><?php echo $excerpt ?></a></div> 
+        <?php } ?>
       </div>
     </div>
+  </div>
   <?php }
 
   $output = ob_get_contents();
   ob_end_clean();
-
-  $respond['output'] = $output;
-  return $respond;
-}
-
-function store_existing_posts(WP_REST_Request $request) {
-  $ids = $request->get_param( 'pids' );
-  $upload = wp_upload_dir();
-  $filepath = $upload['basedir'];
-  $filepath = $filepath . '/home-posts.json';
-  $post_ids = ($ids) ? explode(',',$ids) : '[]';
-  $content = ($post_ids) ? json_encode(array_unique($post_ids)) : '';
-  $fp = fopen($filepath,"wb");
-  fwrite($fp,$content);
-  fclose($fp);
-  return $ids;
-}
-
-
-/* Get Latest Post */
-add_shortcode('show_recent_posts', 'get_recent_posts_shortcode');
-function get_recent_posts_shortcode() {
-  return '<div class="recent-posts-restapi"></div>';
-}
-
-function get_recent_posts_func(WP_REST_Request $request) {
-  //$exclude_ids = $request->get_param( 'exclude' );
-  $exclude = @file_get_contents(get_site_url() . '/wp-content/uploads/home-posts.json');
-  $exclude_ids = ($exclude) ? json_decode($exclude,true) : '';
-  $pg = $request->get_param( 'pg' );
-  $perpage = $request->get_param( 'perpage' );
-  $paged = ($pg) ? $pg : 1;
-  $posts_per_page = ($perpage) ? $perpage  : 5;
-  $args = array(
-    'posts_per_page'  => $posts_per_page,
-    'paged'           => $pg,
-    'post_type'       => 'post',
-    'post_status'     => 'publish',
-    'orderby'         => 'date',
-    'order'           => 'DESC',
-  );
-
-  if($exclude_ids) {
-    $args['post__not_in'] = $exclude_ids;
-  }
-  $posts = new WP_Query($args);
-  $total_pages = 0;
-  $output = '';
-  ob_start();
-  if ( $posts->have_posts() ) { ?>
-    <div class="articles-wrapper">
-      <?php 
-      $count = $posts->found_posts;
-      $total_pages = $posts->max_num_pages;
-      while ( $posts->have_posts() ) : $posts->the_post(); 
-        $id = get_the_ID();
-        $placeholder = get_stylesheet_directory_uri() . '/assets/images/rectangle-lg.png';
-        $category = get_the_category($id);
-        $excerpt = get_the_content();
-        $excerpt = ($excerpt) ? shortenText(strip_tags($excerpt),90,'.','...') : '';
-        $thumbnailID = get_post_thumbnail_id($id);
-        $img = wp_get_attachment_image_src($thumbnailID,'full');
-        $termlink = ($category) ? get_term_link( $category[0], 'category') : '';
-        $imgStyle = ($img) ? ' style="background-image:url('.$img[0].')"':'';
-      ?>
-      <article id="post-<?php the_ID() ?>" class="recent-post animated fadeIn <?php echo ($img) ? 'has-image':'no-image'?>">
-        <figure<?php echo $imgStyle ?>>
-          <a href="<?php echo get_permalink($id) ?>"><img src="<?php echo $placeholder ?>" alt="" aria-hidden="true"></a>
-        </figure>
-        <div class="text">
-          <?php if ($category) { ?>
-          <a class="category" href="<?php echo $termlink ?>"><span><?php echo $category[0]->name ?></span></a>  
-          <?php } ?>
-          <h3 class="posttitle"><a href="<?php echo get_permalink($id) ?>"><?php echo get_the_title() ?></a></h3>
-          <div class="postdate"><?php echo get_the_date('F j, Y') ?></div>
-          <?php if ($excerpt) { ?>
-          <div class="excerpt"><?php echo $excerpt ?></div> 
-          <?php } ?>
-        </div>
-      </article>
-      <?php endwhile; wp_reset_postdata(); ?>
-    </div>
-  <?php
-  }
-  $output = ob_get_contents();
-  ob_end_clean();
-  $response['button'] = '<div class="paginate-button"><a href="javascript:void(0)" id="morePostBtn" data-totalpages="'.$total_pages.'" data-page="1" data-records="'.$count.'">Load More</a></div>';
-  $response['output'] = $output;
-  return $response;
+  return $output;
 }
 
 function myfunc_register_rest_fields(){
-  register_rest_route( 'wp/v2', '/getpost/top', array(
+  register_rest_route( 'wp/v2', '/customcode/1', array(
     'methods' => 'GET',
     'callback' => 'top_section_content',
   ));
-  register_rest_route( 'wp/v2', '/getpost/single', array(
+  register_rest_route( 'wp/v2', '/getpost', array(
     'methods' => 'GET',
-    'callback' => 'get_single_post_func',
-  ));
-  register_rest_route( 'wp/v2', '/getpost/existing', array(
-    'methods' => 'GET',
-    'callback' => 'store_existing_posts',
-  ));
-  register_rest_route( 'wp/v2', '/getpost/recent', array(
-    'methods' => 'GET',
-    'callback' => 'get_recent_posts_func',
+    'callback' => 'top_section_content',
   ));
 }
 add_action('rest_api_init','myfunc_register_rest_fields');
 
-add_action( 'wp_enqueue_scripts', 'myfunc_styles_scripts' );
 function myfunc_styles_scripts(){
-  global $wp_query; 
-
-  wp_enqueue_script( 
-    'slickjs', 
-    'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js', 
-    array(), '1.8.1', 
-    true 
-  );
-
-  // wp_localize_script( 'my_loadmore', 'misha_loadmore_params', array(
-  //   'ajaxurl' => site_url() . '/wp-admin/admin-ajax.php', // WordPress AJAX
-  //   'posts' => json_encode( $wp_query->query_vars ), // everything about your loop is here
-  //   'current_page' => get_query_var( 'paged' ) ? get_query_var('paged') : 1,
-  //   'max_page' => $wp_query->max_num_pages
-  // ) );
-
   wp_enqueue_script( 
     'myfunc', 
     get_template_directory_uri() . '/assets/js/custom.js', 
@@ -929,10 +805,10 @@ function myfunc_styles_scripts(){
   );
 
   wp_localize_script( 'myfunc', 'frontajax', array(
-    'jsonUrl' => rest_url('wp/v2/getpost')
+    'jsonUrl' => rest_url('wp/v2/customcode')
   ));
 
 }
-
+add_action( 'wp_enqueue_scripts', 'myfunc_styles_scripts' );
 
 
