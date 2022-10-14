@@ -647,7 +647,10 @@ function top_section_content() {
 
     <div data-post="<?php echo $stickyID ?>" class="sticky-post <?php echo ($img) ? 'has-image':'no-image' ?>">
       <a id="stickypost" href="<?php echo get_permalink($stickyID); ?>"<?php echo $imgStyle ?>>
-        <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+        <figure class="hide-desktop" <?php echo $imgStyle ?>>
+          <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+        </figure>
+        
         <span class="caption">
           <?php if ($sticky_category) { ?>
           <span class="category"><b><?php echo $sticky_category[0]->name ?></b></span> 
@@ -670,7 +673,9 @@ function top_section_content() {
         <div data-post="<?php echo $postID ?>" class="post <?php echo ($img) ? 'has-image':'no-image' ?>">
           <div class="inner">
             <a href="<?php echo get_permalink($post->ID) ?>" class="postlink"<?php echo $imgStyle ?>>
-              <img src="<?php echo $placeholder ?>" alt="">
+              <figure class="hide-desktop" <?php echo $imgStyle ?>>
+                <img src="<?php echo $placeholder ?>" alt="">
+              </figure>
               <span class="caption">
                 <?php if ($category) { ?>
                 <span class="category"><b><?php echo $category[0]->name ?></b></span> 
