@@ -5052,9 +5052,8 @@ body.post-type-archive-tribe_events {
   .elementor-207358 .elementor-element.elementor-element-54c6aff {
     padding: 0 0!important;
   }
-  .elementor-207358 .elementor-element.elementor-element-726c85d5 > .elementor-element-populated,
   .recent-posts-restapi  {
-    padding: 0 20px;
+    padding: 0 20px!important;
   }
   .elementor-207358 .elementor-element.elementor-element-5bc6158 > .elementor-element-populated {
     margin-left: 0!important;
@@ -5132,11 +5131,8 @@ body.post-type-archive-tribe_events {
     }
     
   }
-  .elementor-element-0e3ae39.subscribe-form-box {
-    padding: 20px;
-  }
-  .elementor-element-0e3ae39.subscribe-form-box > .elementor-column-wrap.elementor-element-populated {
-    padding: 20px;
+  .elementor-element-0e3ae39.subscribe-form-box .elementor-element-a1600a0 {
+    padding: 30px 0 0;
   }
   .top_section_articles .sticky-post .title b {
     font-size: 1.5rem;

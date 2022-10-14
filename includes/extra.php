@@ -919,13 +919,6 @@ function myfunc_styles_scripts(){
     true 
   );
 
-  // wp_localize_script( 'my_loadmore', 'misha_loadmore_params', array(
-  //   'ajaxurl' => site_url() . '/wp-admin/admin-ajax.php', // WordPress AJAX
-  //   'posts' => json_encode( $wp_query->query_vars ), // everything about your loop is here
-  //   'current_page' => get_query_var( 'paged' ) ? get_query_var('paged') : 1,
-  //   'max_page' => $wp_query->max_num_pages
-  // ) );
-
   wp_enqueue_script( 
     'myfunc', 
     get_template_directory_uri() . '/assets/js/custom.js', 
@@ -938,6 +931,10 @@ function myfunc_styles_scripts(){
   ));
 
 }
+
+
+
+
 
 
 
