@@ -4145,6 +4145,15 @@ body.error404 {
 
 }
 
+body.archive.category {
+  article.hentry {
+    .elementor-post__thumbnail {
+      border-radius: 15px;
+      overflow: hidden;
+    }
+  }
+}
+
 @media screen and (min-width: 1025px) {
   body {
     padding-top: 40px;
