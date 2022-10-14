@@ -700,13 +700,15 @@ function top_section_content() {
           $sticky_postID = $sticky->ID;
           $sticky_thumbnailID = get_post_thumbnail_id( $sticky_postID );
           $sticky_img = wp_get_attachment_image_src($sticky_thumbnailID,'full');
-          $sticky_imgStyle = ($sticky_img) ? ' style="background-image:url('.$sticky_img[0].')"':'';
+          $imgStyle = ($sticky_img) ? ' style="background-image:url('.$sticky_img[0].')"':'';
           $sticky_category = get_the_category($sticky_postID);
           $postIDs[$sticky_postID] = $sticky_postID;
         ?>
         <div data-post="<?php echo $sticky_postID ?>" class="sticky-post <?php echo ($sticky_img) ? 'has-image':'no-image' ?>">
-          <a id="stickypost" href="<?php echo get_permalink($sticky_postID); ?>"<?php echo $sticky_imgStyle ?>>
-            <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+          <a id="stickypost" href="<?php echo get_permalink($sticky_postID); ?>"<?php echo $imgStyle ?>>
+            <figure class="hide-desktop" <?php echo $imgStyle ?>>
+              <img src="<?php echo $placeholder ?>" alt="" aria-hidden="true">
+            </figure>
             <span class="caption">
               <?php if ($sticky_category) { ?>
               <span class="category"><b><?php echo $sticky_category[0]->name ?></b></span> 
@@ -729,7 +731,9 @@ function top_section_content() {
             <div data-post="<?php echo $postID ?>" class="post <?php echo ($img) ? 'has-image':'no-image' ?>">
               <div class="inner">
                 <a href="<?php echo get_permalink($post->ID) ?>" class="postlink"<?php echo $imgStyle ?>>
-                  <img src="<?php echo $placeholder ?>" alt="">
+                  <figure class="hide-desktop" <?php echo $imgStyle ?>>
+                    <img src="<?php echo $placeholder ?>" alt="">
+                  </figure>
                   <span class="caption">
                     <?php if ($category) { ?>
                     <span class="category"><b><?php echo $category[0]->name ?></b></span> 
