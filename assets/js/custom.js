@@ -385,12 +385,31 @@ jQuery(document).ready(function($){
           },
           error: function(xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
-            console.log(err.Message);
+            //console.log(err.Message);
           }
         });
       });
 
     });
+  }
+
+  /* Append IMAGE CAPTION On Single Post */
+  if( $('body.single-post').length ) {
+    if( typeof elementorFrontendConfig.post!="undefined" || elementorFrontendConfig.post!=null ) {
+      let postId = elementorFrontendConfig.post.id;
+      $.get(frontajax.jsonUrl+'/imagemeta/?pid='+postId,function(data){
+        if(typeof data.photo_caption!="undefined" || data.photo_caption!=null ) {
+          var ImageCredit = data.photo_caption.trim().replace(/\s+/g, " ");
+          var str = ImageCredit.replace(/\s+/g,'').toLowerCase();
+          if(str) {
+            var imageCaption = '<figcaption class="featImageCaption">'+ImageCredit+'</figcaption>';
+            if( $('.elementor-widget-theme-post-featured-image figcaption').length==0 ) {
+              $('.elementor-widget-theme-post-featured-image .elementor-widget-container').append(imageCaption);
+            } 
+          }
+        }
+      });
+    }
   }
 
   function collectExistingPosts() {
@@ -403,11 +422,39 @@ jQuery(document).ready(function($){
         });
       }
 
-      $.ajax({
-        url:frontajax.jsonUrl+'/existing/?pids='+existingPosts
-      }).done(function(response){
-      });
+      var additionalPost = [];
+      if( $('.single-post-restapi').length ) {
+        $('.single-post-restapi').each(function(){
+          var id = $(this).attr('data-post');
+          additionalPost.push(id);
+        });
+      }
+
+      var combine = $.merge(existingPosts, additionalPost);
+      var excludePosts = (combine.length) ? getUnique(combine) : [];
+
+      if( excludePosts.length ) {
+        $.ajax({
+          url:frontajax.jsonUrl+'/existing/?pids='+excludePosts
+        }).done(function(response){
+        });
+      }
+
+      
     }
+  }
+
+
+  function getUnique(array){
+    var uniqueArray = [];
+    
+    // Loop through array values
+    for(var value of array){
+        if(uniqueArray.indexOf(value) === -1){
+            uniqueArray.push(value);
+        }
+    }
+    return uniqueArray;
   }
 
   function remove_duplicates_es6(arr) {

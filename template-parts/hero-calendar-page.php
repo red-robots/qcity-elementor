@@ -11,6 +11,7 @@ $btnTitle = (isset($button['title']) && $button['title']) ? $button['title'] : '
 $btnTarget = (isset($button['target']) && $button['target']) ? $button['target'] : '_self';
 $calendar_featured_logo = get_field('calendar_featured_logo','option'); 
 $calendar_featured_logo_link = get_field('calendar_featured_logo_link','option'); 
+$calendar_featured_logo_text = get_field('calendar_featured_logo_text','option'); 
 ?>
 <div id="customElementHead">
   <?php if($calendar_image) { ?>
@@ -28,6 +29,9 @@ $calendar_featured_logo_link = get_field('calendar_featured_logo_link','option')
 
 <?php if ($calendar_featured_logo) { ?>
 <div class="event-featured-logo">
+  <?php if ($calendar_featured_logo_text) { ?>
+   <span class="feat-logo-text"><?php echo $calendar_featured_logo_text ?></span> 
+  <?php } ?>
   <?php if ($calendar_featured_logo_link) { ?>
     <a href="<?php echo $calendar_featured_logo_link ?>" target="_blank"><img src="<?php echo $calendar_featured_logo['url'] ?>" alt="<?php echo $calendar_featured_logo['title'] ?>"></a>
   <?php } else { ?>

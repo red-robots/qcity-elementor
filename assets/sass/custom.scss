@@ -1068,9 +1068,9 @@ body:not(.home) #site-custom-header {
 #site-custom-header ul.elementor-nav-menu li {
   position: relative;
 }
-#site-custom-header ul.elementor-nav-menu li a .sub-arrow {
-  display:none;
-}
+// #site-custom-header ul.elementor-nav-menu li a .sub-arrow {
+//   display:none;
+// }
 #site-custom-header .elementor-nav-menu--dropdown {
   background-color: rgba(241,102,34,.85);
   position: absolute;
@@ -4095,8 +4095,10 @@ body.error404 {
     }
     .elementor-col-50 .elementor-widget-container {
       h1.elementor-heading-title {
-        margin-top: 25px;
+        margin-top: 15px;
         font-size: 40px;
+        position: relative;
+        top: 10px;
       }
     }
     .elementor-section.elementor-top-section {
@@ -4143,6 +4145,51 @@ body.error404 {
     }
   }
 
+  .top_section_articles .latest-posts-blocks {
+    padding: 10px 20px;
+    margin-bottom: 20px!important;
+    a {
+      background-image: none!important;
+      .caption {
+        position: relative;
+        padding-left: 0;
+        padding-right: 0;
+        width: 100%;
+        span.category {
+          color: $secondary;
+          margin-top: 12px;
+          margin-bottom: 0;
+          b {
+            color: $secondary;
+            background-color: transparent;
+            padding: 0 0;
+            font-family: $font_secondary;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin: 0 0;
+          }
+        }
+        span.title {
+          color: #000;
+          b {
+            font-size: 1.4rem;
+          }
+        }
+      }
+    }
+    .post {
+      margin-bottom: 10px;
+    }
+    figure.hide-desktop {
+      width: 100%;
+      float: left;
+      visibility: visible!important;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
 }
 
 body.archive.category {
@@ -4474,6 +4521,20 @@ body.archive.category {
 }
 
 body.single {
+  .featImageCaption {
+    text-align: left;
+    padding-top: 3px;
+    font-size: 15px;
+    position: relative;
+    z-index: 20;
+    top: 28px;
+  }
+  &.single-post .elementor-widget-theme-post-featured-image {
+    .elementor-image {
+      position: relative;
+      top: 25px;
+    }
+  }
   .elementor-widget-author-box {
     #sponsoredbyBlock {
       display: block!important;
@@ -4728,12 +4789,20 @@ body.post-type-archive-tribe_events {
   .event-featured-logo {
     text-align: center;
     padding: 30px 20px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     a {
       display: inline-block;
     }
     img {
-      width: 250px;
-      height: auto;
+      width: auto;
+      height: 80px;
+    }
+    .feat-logo-text {
+      font-weight: 500;
+      padding-right: 15px;
     }
   }
   .calendar-buttons {
@@ -4888,6 +4957,22 @@ body.post-type-archive-tribe_events {
       font-weight: 500;
       line-height:1.1;
     }
+  }
+}
+
+.elementor-element-726c85d5.subscribe-form-box {
+  .elementor-background-overlay {
+    background: $teal;
+    opacity: 1!important;
+  }
+  .elementor-widget-shortcode,
+  .elementor-widget-shortcode .elementor-widget-container,
+  .elementor-widget-shortcode .elementor-widget-container .elementor-shortcode,
+  .single-post-restapi,
+  .home-single-post-block,
+  .home-single-post-block .inner,
+  .home-single-post-block .inner .text  {
+    height: 100%;
   }
 }
 
@@ -5089,7 +5174,26 @@ body.post-type-archive-tribe_events {
     border-radius: 8px!important;
     overflow: hidden;
   }
+  body.post-type-archive-tribe_events #customElementHead {
+    padding-left: 0;
+    padding-right: 0;
+    min-height: 185px;
+    .pageHero {
+      min-height: 185px;
+    }
+  }
+  .elementor-element-a35e34f .home-single-post-block .inner {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .elementor-207358 .elementor-element.elementor-element-5bc6158>.elementor-element-populated {
+    padding: 0 0!important;
+  }
+  section.elementor-section .subscribe-form-box .elementor-widget-wrap {
+    padding-bottom: 0!important;
+  }
 }
+
 
 @media screen and (max-width: 900px) {
   .elementor-207365 .elementor-element.elementor-element-b94bab6 {
@@ -5188,6 +5292,52 @@ body.post-type-archive-tribe_events {
         display: none!important;
       }
     }
+  }
+  body.single .featImageCaption {
+    margin-bottom: 35px;
+    margin-top: 5px;
+  }
+  body.single.single-post .elementor-widget-theme-post-featured-image {
+    top: 10px;
+    .elementor-image {
+      top: 0;
+      z-index: 20;
+      &:after {
+        content: "";
+        display: block;
+        width: 95vw;
+        height: 30px;
+        background: #fff;
+        position: absolute;
+        left: -13px;
+        bottom: 0;
+      }
+      img {
+        position: relative;
+        z-index: 25;
+      }
+    }
+    .featImageCaption {
+      margin-top: 0;
+      margin-bottom: 0;
+      width: 100vw;
+      background: #FFF;
+      top: 0;
+      left: -15px;
+      padding: 5px 15px 0;
+      position: relative;
+      z-index: 28;
+    }
+    .elementor-widget-wrap {
+      padding-bottom: 0!important;
+    }
+    .elementor-widget-container {
+      position: relative;
+      z-index: 20;
+    }
+  }
+  .elementor-199229 .elementor-element.elementor-element-d51f729 > .elementor-widget-container {
+    margin-bottom: 0!important;
   }
 }
 

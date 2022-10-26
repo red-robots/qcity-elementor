@@ -774,8 +774,8 @@ function get_single_post_func(WP_REST_Request $request) {
   if( $post = get_post($id) ) { 
     ob_start(); 
     $category = get_the_category($id);
-    $excerpt = $post->post_content;
-    $excerpt = ($excerpt) ? shortenText($excerpt,100,'.','...') : '';
+    $excerpt = get_the_excerpt($id);
+    //$excerpt = ($excerpt) ? shortenText($excerpt,100,'.','...') : '';
     $thumbnailID = get_post_thumbnail_id($id);
     $img = wp_get_attachment_image_src($thumbnailID,'full');
     $termlink = ($category) ? get_term_link( $category[0], 'category') : '';
@@ -909,6 +909,10 @@ function myfunc_register_rest_fields(){
     'methods' => 'GET',
     'callback' => 'get_recent_posts_func',
   ));
+  register_rest_route( 'wp/v2', '/getpost/imagemeta', array(
+    'methods' => 'GET',
+    'callback' => 'get_image_metadata_func',
+  ));
 }
 add_action('rest_api_init','myfunc_register_rest_fields');
 
@@ -936,8 +940,35 @@ function myfunc_styles_scripts(){
 
 }
 
+function get_image_metadata_func(WP_REST_Request $request) {
+  $output['photo_caption'] = '';
+  $pid = $request->get_param( 'pid' );
+  $thumbnail_id = get_post_thumbnail_id($pid);
+  $data = get_post($pid);
+  $thumbnail_image = get_posts(array('p' => $thumbnail_id, 'post_type' => 'attachment'));
+  if ($thumbnail_image && isset($thumbnail_image[0])) {
+    if (! empty($thumbnail_image[0]->post_excerpt)) {
+      $caption = $thumbnail_image[0]->post_excerpt;
+      //$caption = $thumbnail_image[0]->post_content;
+      $output['photo_caption'] = $caption;
+    }
+  }
+  return $output;
+}
 
 
+
+// function get_the_feature_caption() {
+//   global $post;
+//   $thumbnail_id = get_post_thumbnail_id($post->ID);
+//   $thumbnail_image = get_posts(array('p' => $thumbnail_id, 'post_type' => 'attachment'));
+//   if ($thumbnail_image && isset($thumbnail_image[0])) {
+//     if (! empty($thumbnail_image[0]->post_excerpt)) {
+//       $caption = $thumbnail_image[0]->post_excerpt;
+//     }
+//   }
+//   return $caption;
+// }
 
 
 
