@@ -4707,6 +4707,13 @@ body.submit-event-page {
 }
 
 body.post-type-archive-tribe_events {
+  .calendar-page-ads {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
   #site-logo {
     img.mobile-site-logo {
       display: block;
@@ -4805,6 +4812,7 @@ body.post-type-archive-tribe_events {
       padding-right: 15px;
     }
   }
+
   .calendar-buttons {
     display: flex;
     flex-wrap: wrap;
