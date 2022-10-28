@@ -1,5 +1,10 @@
 jQuery(document).ready(function($){
 
+  /* Qcity Logo on Header */
+  if(typeof qcityLogoSmall!="undefined" || qcityLogoSmall!=null) {
+    $('body.subpage .elementor-section.elementor-top-section').not('#site-custom-header').find('.elementor-image a').html('<img class="qcity-logo-top" src="'+qcityLogoSmall+'" alt="QcityMetro"><span>QCITY METRO</span>');
+  }
+
   if( $('#site-logo').length && logoMobile!==null) {
     if( $('.mobile-site-logo').length==0 ) {
       $('#site-logo .elementor-image a').append('<img src="'+logoMobile+'" alt="" class="mobile-site-logo" />');

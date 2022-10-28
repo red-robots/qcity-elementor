@@ -859,8 +859,9 @@ function get_recent_posts_func(WP_REST_Request $request) {
         $id = get_the_ID();
         $placeholder = get_stylesheet_directory_uri() . '/assets/images/rectangle-lg.png';
         $category = get_the_category($id);
-        $excerpt = get_the_content();
-        $excerpt = ($excerpt) ? shortenText(strip_tags($excerpt),90,'.','...') : '';
+        //$excerpt = get_the_content();
+        //$excerpt = ($excerpt) ? shortenText(strip_tags($excerpt),90,'.','...') : '';
+        $excerpt = get_the_excerpt($id);
         $thumbnailID = get_post_thumbnail_id($id);
         $img = wp_get_attachment_image_src($thumbnailID,'full');
         $termlink = ($category) ? get_term_link( $category[0], 'category') : '';
@@ -957,6 +958,20 @@ function get_image_metadata_func(WP_REST_Request $request) {
 }
 
 
+function getQcityMetroLogo() {
+  global $wpdb;
+  $query = "SELECT option_value FROM ".$wpdb->prefix."options WHERE option_name='options_qcity_logo_header'";
+  $result = $wpdb->get_row($query);
+  $logoURL = '';
+  if($result) {
+    $postid = ($result->option_value) ? $result->option_value : '';
+    if($postid) {
+      $res = $wpdb->get_row("SELECT guid FROM ".$wpdb->prefix."posts WHERE ID=".$postid);
+      $logoURL = ($res) ? $res->guid : '';
+    }
+  }
+  return $logoURL;
+}
 
 // function get_the_feature_caption() {
 //   global $post;

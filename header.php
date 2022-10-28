@@ -33,6 +33,7 @@ if(basename($actual_link)=='calendar') {
 		var qcitySiteURL = '<?php echo get_site_url() ?>';
 		var siteThemeURL='<?php echo get_stylesheet_directory_uri() ?>';
 		var logoMobile = '<?php echo $mobileLogoURL ?>';
+    var qcityLogoSmall = '<?php echo getQcityMetroLogo() ?>';
 	</script>
 	<link rel="stylesheet" href="<?php echo get_template_directory_uri() . '/assets/css/custom.css' ?>">
 	<?php if ( is_singular('tribe_events') ) { ?>

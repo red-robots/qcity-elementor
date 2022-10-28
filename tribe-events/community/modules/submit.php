@@ -54,6 +54,7 @@ $button_label = apply_filters( 'tribe_community_event_edit_button_label', $butto
 </div>
 
 
+
 <script src="<?php echo get_stylesheet_directory_uri() ?>/assets/js/jquery.validate.min.js"></script>
 <script>
 jQuery(document).ready(function($){
