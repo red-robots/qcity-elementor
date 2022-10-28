@@ -4206,6 +4206,8 @@ body.error404 {
       margin-bottom: 10px;
     }
     figure.hide-desktop {
+      overflow: hidden;
+      border-radius: 10px;
       width: 100%;
       float: left;
       visibility: visible!important;
@@ -5756,6 +5758,10 @@ body.post-type-archive-tribe_events {
   .elementor-223 .elementor-element.elementor-element-f62b0f5 > .elementor-widget-container {
     padding: 65px 0px 100px 0px;
   }
+}
+
+body.home .elementor-widget-wp-widget-advads_ad_widget {
+
 }
 
 body.post-a-new-event {
