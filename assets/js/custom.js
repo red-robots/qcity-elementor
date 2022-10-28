@@ -2,7 +2,7 @@ jQuery(document).ready(function($){
 
   /* Qcity Logo on Header */
   if(typeof qcityLogoSmall!="undefined" || qcityLogoSmall!=null) {
-    $('body.subpage .elementor-section.elementor-top-section').not('#site-custom-header').find('.elementor-image a').html('<img class="qcity-logo-top" src="'+qcityLogoSmall+'" alt="QcityMetro"><span>QCITY METRO</span>');
+    $('body.subpage header.elementor-location-header .elementor-section.elementor-top-section').not('#site-custom-header').find('.elementor-image a').html('<img class="qcity-logo-top" src="'+qcityLogoSmall+'" alt="QcityMetro"><span>QCITY METRO</span>');
   }
 
   if( $('#site-logo').length && logoMobile!==null) {
@@ -313,15 +313,17 @@ jQuery(document).ready(function($){
   $('body').not('.elementor-editor-active').find('#hero-caption .elementor-widget-wrap').appendTo('.elementor-section.video-hero');
   
 
-  $(window).scroll(function() {    
+  var position = $(window).scrollTop(); 
+  $(window).scroll(function() {
     var scroll = $(window).scrollTop();
-
-    if (scroll >= 100) {
-      $('body').addClass("page-scroll");
-    } else {
-      $('body').removeClass("page-scroll");
-    }
+    if(scroll > position) {
+        $('body').addClass("scrolled");
+      } else {
+        $('body').removeClass("scrolled");
+      }
+      position = scroll;
   });
+  
 
 
   /* REST API */
