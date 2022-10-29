@@ -51,6 +51,8 @@ $button_label = apply_filters( 'tribe_community_event_edit_button_label', $butto
 	 */
 	do_action( 'tribe_events_community_section_after_submit' );
 	?>
+
+
 </div>
 
 

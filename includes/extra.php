@@ -914,8 +914,21 @@ function myfunc_register_rest_fields(){
     'methods' => 'GET',
     'callback' => 'get_image_metadata_func',
   ));
+  register_rest_route( 'wp/v2', '/getpost/session', array(
+    'methods' => 'GET',
+    'callback' => 'store_data_session_func',
+  ));
 }
 add_action('rest_api_init','myfunc_register_rest_fields');
+
+function store_data_session_func(WP_REST_Request $request) {
+  $promote = $request->get_param( 'promote' );
+  $cookie_name = "promote_event";
+  $cookie_value = $promote;
+  setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+  return $cookie_value;
+}
+
 
 add_action( 'wp_enqueue_scripts', 'myfunc_styles_scripts' );
 function myfunc_styles_scripts(){

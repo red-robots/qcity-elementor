@@ -5761,13 +5761,13 @@ body.post-type-archive-tribe_events {
   }
 }
 
-body.home .elementor-widget-wp-widget-advads_ad_widget {
+.event-success-message .hide-title,
+.event-success-message,
+#paymentFormDiv { display: none; }
+body.elementor-editor-active .event-success-message .hide-title,
+body.elementor-editor-active .event-success-message,
+body.elementor-editor-active #paymentFormDiv {display:block!important;}
 
-}
-
-body.post-a-new-event {
-
-}
 
 
 

@@ -469,6 +469,28 @@ jQuery(document).ready(function($){
     let it = s.values();
     return Array.from(it);
   }
-  
+
+
+  /* POST A NEW EVENT */
+  $('a#post-with-promotion').on('click',function(e){
+    e.preventDefault();
+    var pagelink = $(this).attr('href');
+    $.ajax({
+      url:frontajax.jsonUrl+'/session/?promote=yes'
+    }).done(function(response){
+      window.location.href = pagelink;
+    });
+  });
+
+  $('a#post-no-promotion').on('click',function(e){
+    e.preventDefault();
+    var pagelink = $(this).attr('href');
+    $.ajax({
+      url:frontajax.jsonUrl+'/session/?promote=no'
+    }).done(function(response){
+      window.location.href = pagelink;
+    });
+  });
+
 
 });

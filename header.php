@@ -23,6 +23,7 @@ if(basename($actual_link)=='calendar') {
 	<meta name="viewport" content="<?php echo esc_attr( $viewport_content ); ?>">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 	<?php wp_head(); ?>
+  <link rel="stylesheet" href="<?php echo get_template_directory_uri() . '/assets/css/custom.css' ?>">
   <?php 
   $mobileLogo =  get_field('sitelogo_mobile','option'); 
   $mobileLogoURL = ( isset($mobileLogo['url']) && $mobileLogo['url'] ) ? $mobileLogo['url'] : '';
@@ -35,8 +36,7 @@ if(basename($actual_link)=='calendar') {
 		var logoMobile = '<?php echo $mobileLogoURL ?>';
     var qcityLogoSmall = '<?php echo getQcityMetroLogo() ?>';
 	</script>
-	<link rel="stylesheet" href="<?php echo get_template_directory_uri() . '/assets/css/custom.css' ?>">
-	<?php if ( is_singular('tribe_events') ) { ?>
+  <?php if ( is_singular('tribe_events') ) { ?>
 	<script>var geodir_params='';</script>
 	<?php } ?>
 
@@ -51,6 +51,33 @@ if(basename($actual_link)=='calendar') {
 	<meta property="og:image" content="<?php echo $post_image[0] ?>" />
 	<?php } ?>
 	<?php } ?> 
+
+<?php 
+if( is_page() ) {
+  global $post;
+  $post_slug = (isset($post->post_name) && $post->post_name) ? $post->post_name : '';
+  if($post_slug=='post-a-new-event') {
+    /* Reset Cookies */
+    $cookie_name = "promote_event";
+    $cookie_value = '';
+    setcookie($cookie_name, $cookie_value, 0, "/"); 
+  }
+}
+/* Show Payment Form if `Post with Promotion` is selected */
+$is_promote_event = (isset($_COOKIE["promote_event"]) && $_COOKIE["promote_event"]=='yes') ? 'yes' : ''; 
+if($is_promote_event) { ?>
+<style>
+#paymentFormDiv, .event-success-message#promote-yes{display:block;}
+.event-success-message#promote-no{display:none;}
+</style>
+<?php } else { ?>
+<style>
+.event-success-message#promote-no{display:block;}
+#paymentFormDiv, .event-success-message#promote-yes{display:none;}
+</style>
+<?php } ?>
+
+<?php print_r($is_promote_event); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php if (is_singular('tribe_events')) { ?><div id="singlePostDataInfo" data-postid="<?php echo get_the_ID(); ?>"></div><?php } ?>

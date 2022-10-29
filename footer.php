@@ -22,45 +22,46 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 <?php wp_footer(); ?>
 
 <?php  
-  /* Submit An Event page (Non-Loggedin Users) */
-  global $post;
-  $id = (isset($post->ID) && $post->ID) ? $post->ID : 0;
-  $siteKey = get_option('elementor_pro_recaptcha_site_key');
-  if($id==57) {
-    $register_info = get_field('add_event_page_register','option');
-    $register_info = ($register_info) ? email_obfuscator($register_info) : '';
-    if($register_info) { ?>
-      <div id="event-register-text" style="display:none;"><div class="reg-info"><?php echo $register_info ?></div></div>
-      <script src="https://www.google.com/recaptcha/api.js"></script>
-      <script>
-      jQuery(document).ready(function($){
-        if( $('form#tribe_events_community_login').length ) {
-          $('#event-register-text').insertBefore('.tribe-community-events');
-          $('body').addClass('submit-event-page');
-          $('form#tribe_events_community_login input#user_login').attr('required',true);
-          $('form#tribe_events_community_login input#user_pass').attr('required',true);
+/* Submit An Event page (Non-Loggedin Users) */
+global $post;
+$id = (isset($post->ID) && $post->ID) ? $post->ID : 0;
+$post_slug = (isset($post->post_name) && $post->post_name) ? $post->post_name : '';
+$siteKey = get_option('elementor_pro_recaptcha_site_key');
+if($id==57) {
+  $register_info = get_field('add_event_page_register','option');
+  $register_info = ($register_info) ? email_obfuscator($register_info) : '';
+  if($register_info) { ?>
+    <div id="event-register-text" style="display:none;"><div class="reg-info"><?php echo $register_info ?></div></div>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+    jQuery(document).ready(function($){
+      if( $('form#tribe_events_community_login').length ) {
+        $('#event-register-text').insertBefore('.tribe-community-events');
+        $('body').addClass('submit-event-page');
+        $('form#tribe_events_community_login input#user_login').attr('required',true);
+        $('form#tribe_events_community_login input#user_pass').attr('required',true);
 
-          var reCaptcha = '<div id="g-recaptcha" class="g-recaptcha" data-sitekey="<?php echo $siteKey?>"></div>';
-          $(reCaptcha).insertAfter('form#tribe_events_community_login .login-password');
+        var reCaptcha = '<div id="g-recaptcha" class="g-recaptcha" data-sitekey="<?php echo $siteKey?>"></div>';
+        $(reCaptcha).insertAfter('form#tribe_events_community_login .login-password');
+      }
+
+      $('#tribe_events_community_login').on('submit',function(e){
+        var response = grecaptcha.getResponse();
+        if(response.length == 0) {
+         var reCaptchaError = '<div id="login_error" class="tribe-community-notice tribe-community-notice-error"><strong>Error verifying reCAPTCHA, please try again.</strong></div>';
+         $('.tribe-community-events').prepend(reCaptchaError);
+         return false;
+        } else {
+          $('#login_error').remove();
+          return true;
         }
-
-        $('#tribe_events_community_login').on('submit',function(e){
-          var response = grecaptcha.getResponse();
-          if(response.length == 0) {
-           var reCaptchaError = '<div id="login_error" class="tribe-community-notice tribe-community-notice-error"><strong>Error verifying reCAPTCHA, please try again.</strong></div>';
-           $('.tribe-community-events').prepend(reCaptchaError);
-           return false;
-          } else {
-            $('#login_error').remove();
-            return true;
-          }
-        });
-
       });
-      </script>
-    <?php
-    }
+
+    });
+    </script>
+  <?php
   }
+}
 ?>
 <script src="<?php echo get_stylesheet_directory_uri() ?>/assets/js/custom.js"></script>
 <?php 
