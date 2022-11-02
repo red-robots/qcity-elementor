@@ -76,8 +76,6 @@ if($is_promote_event) { ?>
 #paymentFormDiv, .event-success-message#promote-yes{display:none;}
 </style>
 <?php } ?>
-
-<?php print_r($is_promote_event); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php if (is_singular('tribe_events')) { ?><div id="singlePostDataInfo" data-postid="<?php echo get_the_ID(); ?>"></div><?php } ?>

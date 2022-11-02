@@ -4168,7 +4168,7 @@ body.error404 {
 
   .top_section_articles .latest-posts-blocks {
     padding: 10px 20px;
-    margin-bottom: 50px!important;
+    margin-bottom: 30px!important;
     a {
       background-image: none!important;
       &:before {
@@ -4203,7 +4203,12 @@ body.error404 {
       }
     }
     .post {
-      margin-bottom: 10px;
+      float: left;
+      width: 100%!important;
+      height: auto!important;
+      margin-bottom: 25px!important;
+      padding-bottom: 15px!important;
+      border-bottom: 1px solid #eaeaea;
     }
     figure.hide-desktop {
       overflow: hidden;
