@@ -327,15 +327,52 @@ jQuery(document).ready(function($){
 
 
   /* REST API */
-  if( $('.top_section_articles') ) {
+  if( $('.top_section_articles [data-post]') ) {
     $.ajax({
       url:frontajax.jsonUrl+'/top'
     }).done(function(response){
       if(response.output) {
         $('.top_section_articles').html(response.output);
+
+        var existingPosts = [];
+        if( $('.top_section_articles [data-post]').length ) {
+          $('.top_section_articles [data-post]').each(function(){
+            var id = $(this).attr('data-post');
+            existingPosts.push(id);
+          });
+        }
+
+        if( $('.single-post-restapi').length ) {
+          $('.single-post-restapi').each(function(){
+            var id = $(this).attr('data-post');
+            if(existingPosts.length) {
+              var key = existingPosts.length;
+              existingPosts[key] = id;
+              key++;
+            }
+          });
+        }
+
+        getTheRecentPosts(existingPosts);
+        
       }
-      collectExistingPosts();
+      //collectExistingPosts();
     });
+  } else {
+
+    var existingPosts = [];
+    if( $('.single-post-restapi').length ) {
+      $('.single-post-restapi').each(function(){
+        var id = $(this).attr('data-post');
+        if(existingPosts.length) {
+          var key = existingPosts.length;
+          existingPosts[key] = id;
+          key++;
+        }
+      });
+    }
+    getTheRecentPosts(existingPosts);
+
   }
 
   if( $('.single-post-restapi').length ) {
@@ -353,50 +390,142 @@ jQuery(document).ready(function($){
   }
 
 
-  if( $('.recent-posts-restapi').length ) {
-    $.ajax({
-      url:frontajax.jsonUrl+'/recent/?pg=1&perpage=5'
-    }).done(function(response){
-      if(response.output) {
-        $('.recent-posts-restapi').html(response.output);
-        if(response.button) {
-          $(response.button).appendTo('.recent-posts-restapi');
-        }
-      }
+  // if( $('.recent-posts-restapi').length ) {
+  //   $.ajax({
+  //     url:frontajax.jsonUrl+'/recent/?pg=1&perpage=5'
+  //   }).done(function(response){
+  //     if(response.output) {
+  //       $('.recent-posts-restapi').html(response.output);
+  //       if(response.button) {
+  //         $(response.button).appendTo('.recent-posts-restapi');
+  //       }
+  //     }
       
-      /* MORE BUTTON */
-      $('#morePostBtn').on('click',function(e){
-        e.preventDefault();
-        var target = $(this);
-        var nextpage = $(this).attr('data-page');
-        var totalpages = $(this).attr('data-totalpages');
-        var pagenum = parseInt(nextpage) + 1;
-        var functionURL = frontajax.jsonUrl+'/recent/?pg='+pagenum+'&perpage=5';
-        $.ajax({
-          type: 'GET',
-          url: functionURL,
-          data: {'pg':pagenum,'perpage':5},
-          dataType:'json',
-          success: function (data) {
-            if(data.output) {
-              $(data.output).appendTo('.recent-posts-restapi');
-            }
-            if(pagenum==totalpages) {
-              $('.paginate-button').remove();
-            } else {
-              target.attr('data-page',pagenum);
-            }
-          },
-          complete:function(){
-            $('.paginate-button').appendTo('.recent-posts-restapi');
-          },
-          error: function(xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            //console.log(err.Message);
-          }
-        });
-      });
+  //     /* MORE BUTTON */
+  //     $('#morePostBtn').on('click',function(e){
+  //       e.preventDefault();
+  //       var target = $(this);
+  //       var nextpage = $(this).attr('data-page');
+  //       var totalpages = $(this).attr('data-totalpages');
+  //       var pagenum = parseInt(nextpage) + 1;
+  //       var functionURL = frontajax.jsonUrl+'/recent/?pg='+pagenum+'&perpage=5';
+  //       $.ajax({
+  //         type: 'GET',
+  //         url: functionURL,
+  //         data: {'pg':pagenum,'perpage':5},
+  //         dataType:'json',
+  //         success: function (data) {
+  //           if(data.output) {
+  //             $(data.output).appendTo('.recent-posts-restapi');
+  //           }
+  //           if(pagenum==totalpages) {
+  //             $('.paginate-button').remove();
+  //           } else {
+  //             target.attr('data-page',pagenum);
+  //           }
+  //         },
+  //         complete:function(){
+  //           $('.paginate-button').appendTo('.recent-posts-restapi');
+  //         },
+  //         error: function(xhr, status, error) {
+  //           var err = eval("(" + xhr.responseText + ")");
+  //           //console.log(err.Message);
+  //         }
+  //       });
+  //     });
 
+  //   });
+  // }
+
+
+  // if( $('.recent-posts-restapi').length ) {
+
+  //   $.ajax({
+  //     url:frontajax.jsonUrl+'/recent/?pg=1&perpage=5',
+  //     type : 'get',
+  //     beforeSend:function(){
+  //       $('[data-post]').each(function(){
+  //         //console.log( $(this).attr('data-post') );
+  //       });
+  //     },
+  //     success:function( response ) {
+  //       if(response.output) {
+  //         $('.recent-posts-restapi').html(response.output);
+  //         if(response.button) {
+  //           $(response.button).appendTo('.recent-posts-restapi');
+  //         }
+  //       }
+  //     },
+  //     complete:function(){
+  //       moreButtonFunction();
+  //     },
+  //     error:function(xhr, status, error) {
+        
+  //     }
+  //   });
+
+  // }
+
+  function getTheRecentPosts(excludeIds) {
+    if( $('.recent-posts-restapi').length ) {
+      var actionURL = frontajax.jsonUrl+'/recent/?pg=1&perpage=5&exclude='+excludeIds;
+      $.ajax({
+        url:actionURL,
+        type : 'get',
+        beforeSend:function(){
+          
+        },
+        success:function( response ) {
+          if(response.output) {
+            $('.recent-posts-restapi').html(response.output);
+            if(response.button) {
+              $(response.button).appendTo('.recent-posts-restapi');
+            }
+          }
+        },
+        complete:function(){
+          moreButtonFunction(excludeIds);
+        },
+        error:function(xhr, status, error) {
+          
+        }
+      });
+    }
+  }
+
+
+  function moreButtonFunction(excludeIds) {
+    /* MORE BUTTON */
+    $('#morePostBtn').on('click',function(e){
+      e.preventDefault();
+      var target = $(this);
+      var nextpage = $(this).attr('data-page');
+      var totalpages = $(this).attr('data-totalpages');
+      var pagenum = parseInt(nextpage) + 1;
+      var functionURL = frontajax.jsonUrl+'/recent/?pg='+pagenum+'&perpage=5&exclude='+excludeIds;
+      $.ajax({
+        type: 'GET',
+        url: functionURL,
+        data: {'pg':pagenum,'perpage':5},
+        dataType:'json',
+        success: function (data) {
+          if(data.output) {
+            $(data.output).appendTo('.recent-posts-restapi');
+          }
+          if(pagenum==totalpages) {
+            $('.paginate-button').remove();
+          } else {
+            target.attr('data-page',pagenum);
+          }
+        },
+        complete:function(){
+          $('.paginate-button').appendTo('.recent-posts-restapi');
+        },
+        error: function(xhr, status, error) {
+          var err = eval("(" + xhr.responseText + ")");
+          //console.log(err.Message);
+        }
+      });
     });
   }
 

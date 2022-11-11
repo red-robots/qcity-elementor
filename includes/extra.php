@@ -828,10 +828,12 @@ function get_recent_posts_shortcode() {
 
 function get_recent_posts_func(WP_REST_Request $request) {
   //$exclude_ids = $request->get_param( 'exclude' );
-  $exclude = @file_get_contents(get_site_url() . '/wp-content/uploads/home-posts.json');
-  $exclude_ids = ($exclude) ? json_decode($exclude,true) : '';
+  // $exclude = @file_get_contents(get_site_url() . '/wp-content/uploads/home-posts.json');
+  // $exclude_ids = ($exclude) ? json_decode($exclude,true) : '';
   $pg = $request->get_param( 'pg' );
   $perpage = $request->get_param( 'perpage' );
+  $exclude = $request->get_param( 'exclude' );
+  $exclude_ids = ($exclude) ? explode(',',$exclude) : '';
   $paged = ($pg) ? $pg : 1;
   $posts_per_page = ($perpage) ? $perpage  : 5;
   $args = array(
@@ -846,6 +848,7 @@ function get_recent_posts_func(WP_REST_Request $request) {
   if($exclude_ids) {
     $args['post__not_in'] = $exclude_ids;
   }
+
   $posts = new WP_Query($args);
   $total_pages = 0;
   $output = '';
