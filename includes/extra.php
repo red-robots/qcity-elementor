@@ -613,7 +613,10 @@ function top_section_latest_articles() {
   return '<div class="top_section_articles"></div>';
 }
 
-function top_section_content() {
+function top_section_content(WP_REST_Request $request) {
+  $exclude = $request->get_param( 'exclude' );
+  $exclude_ids = ($exclude) ? explode(',',$exclude) : '';
+
   /* Get all sticky posts */
   $sticky = get_option( 'sticky_posts' );
   rsort( $sticky );
@@ -624,12 +627,21 @@ function top_section_content() {
     'orderby'       => 'date',
     'order'         => 'DESC'
   );
+
   if($sticky) {
+    if($exclude_ids) {
+      $sticky = array_merge($sticky,$exclude_ids);
+    }
     $args['posts_per_page'] = 2;
     $args['post__not_in'] = $sticky;
   } else {
     $args['posts_per_page'] = 3;
+    if($exclude_ids) {
+      $args['post__not_in'] = $exclude_ids;
+    }
   }
+
+
 
   $postIDs = array();
   $posts = get_posts($args);

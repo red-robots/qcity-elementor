@@ -327,18 +327,33 @@ jQuery(document).ready(function($){
 
 
   /* REST API */
+  var existingPosts = [];
+  if( $('.single-post-restapi').length ) {
+    $('.single-post-restapi').each(function(){
+      var id = $(this).attr('data-post');
+      existingPosts.push(id);
+    });
+  }
+
   if( $('.top_section_articles [data-post]') ) {
+    var excludeIds = (existingPosts.length) ? existingPosts : '';
     $.ajax({
-      url:frontajax.jsonUrl+'/top'
+      url:frontajax.jsonUrl+'/top?exclude='+excludeIds
     }).done(function(response){
       if(response.output) {
         $('.top_section_articles').html(response.output);
 
-        var existingPosts = [];
+        
         if( $('.top_section_articles [data-post]').length ) {
           $('.top_section_articles [data-post]').each(function(){
             var id = $(this).attr('data-post');
-            existingPosts.push(id);
+            if(existingPosts.length) {
+              var key = existingPosts.length;
+              existingPosts[key] = id;
+              key++;
+            } else {
+              existingPosts.push(id);
+            }
           });
         }
 
@@ -384,7 +399,7 @@ jQuery(document).ready(function($){
         if(response.output) {
           $('#single-post-'+id).html(response.output);
         }
-        collectExistingPosts();
+        //collectExistingPosts();
       });
     });
   }
@@ -548,37 +563,35 @@ jQuery(document).ready(function($){
     }
   }
 
-  function collectExistingPosts() {
-    if( $('.recent-posts-restapi').length ) {
-      var existingPosts = [];
-      if( $('[data-post]').length ) {
-        $('[data-post]').each(function(){
-          var id = $(this).attr('data-post');
-          existingPosts.push(id);
-        });
-      }
+  // function collectExistingPosts() {
+  //   if( $('.recent-posts-restapi').length ) {
+  //     var existingPosts = [];
+  //     if( $('[data-post]').length ) {
+  //       $('[data-post]').each(function(){
+  //         var id = $(this).attr('data-post');
+  //         existingPosts.push(id);
+  //       });
+  //     }
 
-      var additionalPost = [];
-      if( $('.single-post-restapi').length ) {
-        $('.single-post-restapi').each(function(){
-          var id = $(this).attr('data-post');
-          additionalPost.push(id);
-        });
-      }
+  //     var additionalPost = [];
+  //     if( $('.single-post-restapi').length ) {
+  //       $('.single-post-restapi').each(function(){
+  //         var id = $(this).attr('data-post');
+  //         additionalPost.push(id);
+  //       });
+  //     }
 
-      var combine = $.merge(existingPosts, additionalPost);
-      var excludePosts = (combine.length) ? getUnique(combine) : [];
+  //     var combine = $.merge(existingPosts, additionalPost);
+  //     var excludePosts = (combine.length) ? getUnique(combine) : [];
 
-      if( excludePosts.length ) {
-        $.ajax({
-          url:frontajax.jsonUrl+'/existing/?pids='+excludePosts
-        }).done(function(response){
-        });
-      }
-
-      
-    }
-  }
+  //     if( excludePosts.length ) {
+  //       $.ajax({
+  //         url:frontajax.jsonUrl+'/existing/?pids='+excludePosts
+  //       }).done(function(response){
+  //       });
+  //     }
+  //   }
+  // }
 
 
   function getUnique(array){
